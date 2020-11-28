@@ -1,10 +1,4 @@
-
-#include "Game.hpp"
-#include <iostream>
-#include <windows.h>
-#include <conio.h>
-
-using namespace std;
+#include "Header.h"
 
 void Game::goTo(int posX, int posY)
 {
