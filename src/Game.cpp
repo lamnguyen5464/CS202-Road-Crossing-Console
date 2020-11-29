@@ -1,10 +1,4 @@
-
-#include "Game.hpp"
-#include <iostream>
-#include <windows.h>
-#include <conio.h>
-
-using namespace std;
+#include "Header.h"
 
 void Game::goTo(int posX, int posY)
 {
@@ -39,7 +33,22 @@ bool Game::controlDirectionKey(int &curX, int &curY, char signal){
     return 0;
 }
 
-void Game::erasePixel(int x, int y){
-    Game::goTo(x, y);
-    cout<<' ';
+bool Game::haveStopSignal(){
+    return GlobalConfig::getInstance()->lastSignal == 'Q';
+}
+
+void Game::drawPixelInQueue(){
+    while (1){
+        while (GlobalConfig::getInstance()->drawingQueue.size() != 0){
+            Pixel *p = GlobalConfig::getInstance()->drawingQueue.front();
+            GlobalConfig::getInstance()->drawingQueue.pop();
+            Game().goTo(p->x, p->y);
+            cout<<p->pixel;
+        }
+    }
+}
+
+void Game::addPixelToQueue(int x, int y, char pixel){
+    Pixel *p = new Pixel(x, y, pixel);
+    GlobalConfig::getInstance()->drawingQueue.push(p);
 }

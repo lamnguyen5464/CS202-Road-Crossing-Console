@@ -1,75 +1,85 @@
-#include <thread>
-#include "Game.hpp"
-#include "Coord.hpp"
-#include "Object.hpp"
-#include <iostream>
-#include <windows.h>
-#include <conio.h>
+#include "Header.h"
 
 using namespace std;
 
 int flag = 0;
 
-void funcThread1(){
-    while (1){
-        if (flag) return;
-        cout<<"Type something...(type Q to return)"<<endl;
-        Sleep(500);
-    }
-}
-
-void funcThread2(){
-    while (1){
+void eventKeyBoardListener()
+{
+    while (1)
+    {
         char t = toupper(getch());
-        if (t=='Q'){
-            flag = 1;
-            return;
-        }
-        cout<<t<<endl;
-
+        GlobalConfig::getInstance()->lastSignal = t;
+        if (Game().haveStopSignal()) return;
     }
 }
+
+void testRun()
+{
+    int curX = 10, curY = 10;
+
+    char pixel = '\xDB';
+    vector<Coord> body;
+    body.push_back(Coord(0, 0));
+    body.push_back(Coord(1, 0));
+    body.push_back(Coord(0, 1));
+    body.push_back(Coord(1, 1));
+    body.push_back(Coord(2, 1));
+    body.push_back(Coord(-1, 1));
+    Truck obj(pixel, body);
+
+    obj.run();
+}
+
+void testPeople()
+{
+    int curX = 10, curY = 10;
+
+    char pixel = '@';
+    vector<Coord> body;
+    body.push_back(Coord(0, 0));
+    body.push_back(Coord(-1, 1));
+    body.push_back(Coord(-2, 1));
+    body.push_back(Coord(1, 1));
+    body.push_back(Coord(2, 1));
+    body.push_back(Coord(0, 1));
+    body.push_back(Coord(0, 2));
+    body.push_back(Coord(1, 3));
+    body.push_back(Coord(-1, 3));
+
+    Car car(pixel, body);
+
+    while (1)
+    {
+        if (Game().haveStopSignal()) return;
+        int oldX = curX, oldY = curY;
+        if (Game().controlDirectionKey(curX, curY, GlobalConfig::getInstance()->lastSignal)){
+            car.erase(oldX, oldY);
+            car.draw(curX, curY);
+            GlobalConfig::getInstance()->lastSignal = ' ';
+        }
+    }
+}
+
 
 int main()
 {
-    cout<<"Start test...."<<endl;
-    thread one(funcThread1);
-    thread sec(funcThread2);
+    Game().setWindowSize(Game().SCREEN_WIDTH, Game().SCREEN_HEIGHT);
+    SetConsoleTitle("App game qua duong");
 
-    cout<<"before join"<<endl;
+    cout << "Start test...." << endl;
+
+    thread one(testRun);
+    thread sec(eventKeyBoardListener);
+    thread thi(testPeople);
+    thread draw(Game().drawPixelInQueue);
+
+    draw.join();
+
     one.join();
     sec.join();
-    cout<<"End!"<<endl;
+    thi.join();
+    cout << "End!" << endl;
 
-    // Game().setWindowSize(Game().SCREEN_WIDTH, Game().SCREEN_HEIGHT);
-    // SetConsoleTitle("App game qua duong");
-
-    // int curX = 10, curY = 10;
-
-    // char pixel = '@';
-    // vector<Coord> body;
-    // body.push_back(Coord(0,0));
-    // body.push_back(Coord(-1, 1));
-    // body.push_back(Coord(-2, 1));
-    // body.push_back(Coord(1, 1));
-    // body.push_back(Coord(2, 1));
-    // body.push_back(Coord(0, 1));
-    // body.push_back(Coord(0, 2));
-    // body.push_back(Coord(1, 3));
-    // body.push_back(Coord(-1, 3));
-
-    // Object obj(pixel, body);
-
-
-    // while (1)
-    // {
-    //     char key = toupper(getch());
-    //     if (key == 'Q')
-    //         break;
-    //     obj.erase(curX, curY);
-    //     Game().controlDirectionKey(curX, curY, key);
-    //     obj.draw(curX, curY);
-
-    // }
     return 0;
 };
