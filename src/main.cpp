@@ -26,7 +26,7 @@ int main()
     body.push_back(Coord(1, 1));
     body.push_back(Coord(2, 1));
     body.push_back(Coord(-1, 1));
-    Truck obj(pixel, body);
+    Car obj(pixel, body);
     // Car obj(pixel, body);                car di ve phai, truck di ve trai
 
     while (1)
