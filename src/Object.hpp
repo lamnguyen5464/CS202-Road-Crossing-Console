@@ -12,12 +12,16 @@ class Object
 private:
     char pixel;
     vector<Coord> body;
-    int curX, curY, delta = 20, move;
+    int curX, curY, delta, move;
 public:
     Object() = default;
-    Object(char pixel, vector<Coord> body, int x, int y, int z);
+    Object(char pixel, vector<Coord> body, int x, int y, int z, int t);
     void draw(int x, int y);
     void erase(int x, int y);
+    void drawAll();
+    void eraseAll();
+    void updateCursor();
+
     virtual void run();
 };
 class Car : public Object
@@ -27,6 +31,7 @@ public:
     void run();
 
 };
+
 class Truck : public Object 
 {
 public:

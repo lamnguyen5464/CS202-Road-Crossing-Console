@@ -2,17 +2,6 @@
 
 using namespace std;
 
-int flag = 0;
-
-void eventKeyBoardListener()
-{
-    while (1)
-    {
-        char t = toupper(getch());
-        GlobalConfig::getInstance()->lastSignal = t;
-        if (Game().haveStopSignal()) return;
-    }
-}
 
 void testRun()
 {
@@ -70,7 +59,7 @@ int main()
     cout << "Start test...." << endl;
 
     thread one(testRun);
-    thread sec(eventKeyBoardListener);
+    thread sec(Game().eventKeyBoardListener);
     thread thi(testPeople);
     thread draw(Game().drawPixelInQueue);
 

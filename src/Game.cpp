@@ -23,32 +23,58 @@ void Game::setWindowSize(int width, int height)
     MoveWindow(consoleWindow, r.left, r.top, width, height, TRUE);
 }
 
-bool Game::controlDirectionKey(int &curX, int &curY, char signal){
-    switch (signal){
-        case 'W': curY--; return 1;
-        case 'S': curY++; return 1;
-        case 'A': curX--; return 1;
-        case 'D': curX++; return 1;
+bool Game::controlDirectionKey(int &curX, int &curY, char signal)
+{
+    switch (signal)
+    {
+    case 'W':
+        curY--;
+        return 1;
+    case 'S':
+        curY++;
+        return 1;
+    case 'A':
+        curX--;
+        return 1;
+    case 'D':
+        curX++;
+        return 1;
     }
     return 0;
 }
 
-bool Game::haveStopSignal(){
+bool Game::haveStopSignal()
+{
     return GlobalConfig::getInstance()->lastSignal == 'Q';
 }
 
-void Game::drawPixelInQueue(){
-    while (1){
-        while (GlobalConfig::getInstance()->drawingQueue.size() != 0){
+void Game::drawPixelInQueue()
+{
+    while (1)
+    {
+        while (GlobalConfig::getInstance()->drawingQueue.size() != 0)
+        {
             Pixel *p = GlobalConfig::getInstance()->drawingQueue.front();
             GlobalConfig::getInstance()->drawingQueue.pop();
             Game().goTo(p->x, p->y);
-            cout<<p->pixel;
+            cout << p->pixel;
         }
     }
 }
 
-void Game::addPixelToQueue(int x, int y, char pixel){
+void Game::addPixelToQueue(int x, int y, char pixel)
+{
     Pixel *p = new Pixel(x, y, pixel);
     GlobalConfig::getInstance()->drawingQueue.push(p);
+}
+
+void Game::eventKeyBoardListener()
+{
+    while (1)
+    {
+        char t = toupper(getch());
+        GlobalConfig::getInstance()->lastSignal = t;
+        if (Game().haveStopSignal())
+            return;
+    }
 }

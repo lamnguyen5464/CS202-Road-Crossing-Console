@@ -12,8 +12,11 @@ public:
     static void setWindowSize(int width, int height);
     static bool controlDirectionKey(int &curX, int &curY, char signal);
     static bool haveStopSignal();
-    static void drawPixelInQueue();
     static void addPixelToQueue(int x, int y, char pixel);
+
+    //in other thread
+    static void drawPixelInQueue();
+    static void eventKeyBoardListener();
 };
 
 #endif
