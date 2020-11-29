@@ -59,6 +59,7 @@ void Game::drawPixelInQueue()
             Game().goTo(p->x, p->y);
             cout << p->pixel;
         }
+        if (Game().haveStopSignal()) return;
     }
 }
 

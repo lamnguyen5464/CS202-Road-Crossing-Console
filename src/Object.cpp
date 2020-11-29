@@ -58,6 +58,7 @@ void Object::updateCursor()
 void Object::run()
 {
     while (1) {
+        if (Game().haveStopSignal()) return;
         drawAll();
         Sleep(500);
         eraseAll();

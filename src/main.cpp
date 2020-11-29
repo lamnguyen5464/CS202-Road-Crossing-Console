@@ -24,17 +24,12 @@ void testPeople()
 {
     int curX = 10, curY = 10;
 
-    char pixel = '@';
+    char pixel = '#';
     vector<Coord> body;
     body.push_back(Coord(0, 0));
-    body.push_back(Coord(-1, 1));
-    body.push_back(Coord(-2, 1));
     body.push_back(Coord(1, 1));
-    body.push_back(Coord(2, 1));
-    body.push_back(Coord(0, 1));
+    body.push_back(Coord(-1, 1));
     body.push_back(Coord(0, 2));
-    body.push_back(Coord(1, 3));
-    body.push_back(Coord(-1, 3));
 
     Car car(pixel, body);
 
@@ -54,21 +49,21 @@ void testPeople()
 int main()
 {
     Game().setWindowSize(Game().SCREEN_WIDTH, Game().SCREEN_HEIGHT);
-    SetConsoleTitle("App game qua duong");
+    SetConsoleTitle("Game qua duong");
 
     cout << "Start test...." << endl;
 
     thread one(testRun);
-    thread sec(Game().eventKeyBoardListener);
-    thread thi(testPeople);
+    thread people(testPeople);
+    thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
 
+
+    keyboardListener.join();
     draw.join();
+    people.join();
 
     one.join();
-    sec.join();
-    thi.join();
-    cout << "End!" << endl;
 
     return 0;
 };
