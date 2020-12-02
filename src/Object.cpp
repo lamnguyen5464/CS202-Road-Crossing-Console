@@ -4,14 +4,11 @@
 Object::Object(char pixel, vector<Coord> body, int x, int y, int z, int t){
     this->pixel = pixel;
     this->body = body;
-    move = x;
+    curX = x;
     curY = y;
-    curX = z;
+    move = z;
     delta = t;
 }
-
-Car::Car(char pixel, vector<Coord> body) : Object(pixel, body, 2, 30, 1, 20) {}
-Truck::Truck(char pixel, vector<Coord> body) : Object(pixel, body, -2, 20, 128, -20) {}
 
 // functions
 void Object::draw(int x, int y){
@@ -74,3 +71,6 @@ void Truck::run()
 {
     Object::run();
 }
+
+Car::Car(char pixel, vector<Coord> body) : Object(pixel, body, 1, 30, 2, 20) {}
+Truck::Truck(char pixel, vector<Coord> body) : Object(pixel, body, 128, 20, -2, -20) {}
