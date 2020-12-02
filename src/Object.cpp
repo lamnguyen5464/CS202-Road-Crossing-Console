@@ -13,15 +13,15 @@ Object::Object(char pixel, vector<Coord> body, int x, int y, int z, int t){
 // functions
 void Object::draw(int x, int y){
     for(int i = 0; i < body.size(); i++){
-        Game().goTo(x + body[i].x, y + body[i].y);
-        cout<<pixel;
+        Game().addPixelToQueue(x + body[i].x, y + body[i].y, pixel);
     }
 }
 
-void Object::erase(int x, int y){
-    for(int i = 0; i < body.size(); i++){
-        Game().goTo(x + body[i].x, y + body[i].y);
-        cout<<' ';
+void Object::erase(int x, int y)
+{
+    for (int i = 0; i < body.size(); i++)
+    {
+        Game().addPixelToQueue(x + body[i].x, y + body[i].y, ' ');
     }
 }
 
@@ -52,22 +52,23 @@ void Object::updateCursor()
     else if (move == -2 && curX == 108) curX = 128;
 }
 
-void Object::run() 
+void Object::run()
 {
     while (1) {
+        if (Game().haveStopSignal()) return;
         drawAll();
-        Sleep(20);
+        Sleep(500);
         eraseAll();
         updateCursor();
     }
 }
 
-void Car::run() 
+void Car::run()
 {
     Object::run();
 }
 
-void Truck::run() 
+void Truck::run()
 {
     Object::run();
 }

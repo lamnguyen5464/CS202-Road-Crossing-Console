@@ -7,4 +7,10 @@ class Coord{
     Coord(int x, int y);
 };
 
+class Pixel: public Coord{
+    public:
+    char pixel;
+    Pixel(int x, int y, char pixel);
+};
+
 #endif
