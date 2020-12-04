@@ -170,7 +170,7 @@ void Game::showGroundPlay()
 
 void Game::showMenu()
 {
-    int numOfOptions = 3;
+    const int numOfOptions = 3;
     string options[numOfOptions] = {
         "New game",
         "Load game",

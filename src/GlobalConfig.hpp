@@ -8,10 +8,10 @@ using namespace std;
 
 
 class GlobalConfig{
-    private:
+private:
     GlobalConfig();
     static GlobalConfig* instance;
-    public:
+public:
     queue<Pixel*> drawingQueue;
     char lastSignal;
     static GlobalConfig* getInstance();
