@@ -28,7 +28,7 @@ void Object::erase(int x, int y)
 void Object::drawAll() 
 {
     int i = 0;
-    while (curX + i * delta < 130 && curX + i * delta > 0)
+    while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
     {
         draw(curX + i * delta, curY);
         ++i;
@@ -38,7 +38,7 @@ void Object::drawAll()
 void Object::eraseAll() 
 {
     int i = 0;
-    while (curX + i * delta < 130 && curX + i * delta > 0)
+    while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
     {
         erase(curX + i * delta, curY);
         ++i;
@@ -48,8 +48,8 @@ void Object::eraseAll()
 void Object::updateCursor() 
 {
     curX += move;
-    if (move == 2 && curX == 21) curX = 1;
-    else if (move == -2 && curX == 108) curX = 128;
+    if (move == 1 && curX == 21) curX = 1;
+    else if (move == -1 && curX == Game::getColumns() - 23) curX = Game::getColumns() - 3;
 }
 
 void Object::run()
@@ -57,7 +57,7 @@ void Object::run()
     while (1) {
         if (Game().haveStopSignal()) return;
         drawAll();
-        Sleep(500);
+        Sleep(20);
         eraseAll();
         updateCursor();
     }
@@ -73,5 +73,5 @@ void Truck::run()
     Object::run();
 }
 
-Car::Car(char pixel, vector<Coord> body) : Object(pixel, body, 1, 30, 2, 20) {}
-Truck::Truck(char pixel, vector<Coord> body) : Object(pixel, body, 128, 20, -2, -20) {}
+Car::Car(char pixel, vector<Coord> body) : Object(pixel, body, 1, 30, 1, 20) {}
+Truck::Truck(char pixel, vector<Coord> body) : Object(pixel, body, Game::getColumns() - 1, 20, -1, -20) {}

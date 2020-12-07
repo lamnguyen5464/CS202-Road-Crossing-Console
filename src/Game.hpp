@@ -20,7 +20,7 @@ public:
     static int getColumns();
     static int getRows();
 
-    //screens:
+    // screens:
     static void showMenu();
     static void showGroundPlay();
 

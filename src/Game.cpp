@@ -107,7 +107,6 @@ void Game::eventKeyBoardListener()
 
 void testRun()
 {
-    int curX = 10, curY = 10;
 
     char pixel = '\xDB';
     vector<Coord> body;
@@ -118,6 +117,20 @@ void testRun()
     body.push_back(Coord(2, 1));
     body.push_back(Coord(-1, 1));
     Truck obj(pixel, body);
+
+    obj.run();
+}
+
+void testCar () {
+    char pixel = '\xDB';
+    vector<Coord> body;
+    body.push_back(Coord(0, 0));
+    body.push_back(Coord(1, 0));
+    body.push_back(Coord(0, 1));
+    body.push_back(Coord(1, 1));
+    body.push_back(Coord(2, 1));
+    body.push_back(Coord(-1, 1));
+    Car obj(pixel, body);
 
     obj.run();
 }
@@ -159,6 +172,7 @@ void Game::showGroundPlay()
     thread draw(Game().drawPixelInQueue);
 
     thread testObj(testRun);
+    thread testOther(testCar);
     thread people(testPeople);
 
     keyboardListener.join();
@@ -166,6 +180,7 @@ void Game::showGroundPlay()
 
     people.join();
     testObj.join();
+    testOther.join();
 }
 
 void Game::showMenu()
