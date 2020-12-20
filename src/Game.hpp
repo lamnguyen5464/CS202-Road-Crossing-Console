@@ -16,6 +16,8 @@ public:
     static void addPixelToQueue(int x, int y, char pixel);
     static int getColumns();
     static int getRows();
+    static void saveGame();
+    static void loadGame();
 
     //screens:
     static void showMenu();
@@ -24,6 +26,7 @@ public:
     //in other thread
     static void drawPixelInQueue();
     static void eventKeyBoardListener();
+    static void notiListener();
 };
 
 #endif

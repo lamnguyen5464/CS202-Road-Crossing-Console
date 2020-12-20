@@ -91,6 +91,20 @@ void Game::drawPixelInQueue()
 void Game::addPixelToQueue(int x, int y, char pixel)
 {
     Pixel *p = new Pixel(x, y, pixel);
+
+    //validate
+    if (x < 0 || y < y || x > Game().getColumns() || y > Game().getRows())
+    {
+        return;
+    }
+
+    char tmp = GlobalConfig::getInstance()->drawing_matrix[x][y];
+
+    if ( pixel != ' ' && tmp != ' ')
+    {
+        GlobalConfig::getInstance()->lastSignal = 'Q';
+    }
+    GlobalConfig::getInstance()->drawing_matrix[x][y] = pixel;
     GlobalConfig::getInstance()->drawingQueue.push(p);
 }
 
@@ -118,27 +132,32 @@ void testRun()
     body.push_back(Coord(2, 1));
     body.push_back(Coord(-1, 1));
     Truck obj(pixel, body);
-
     obj.run();
 }
 
 void testPeople()
 {
-    int curX = 10, curY = 10;
+    int curX = GlobalConfig::getInstance()->currentPeopleX,
+        curY = GlobalConfig::getInstance()->currentPeopleY;
 
-    char pixel = '#';
+    char pixel = '\xDB';
     vector<Coord> body;
     body.push_back(Coord(0, 0));
-    body.push_back(Coord(1, 1));
-    body.push_back(Coord(-1, 1));
-    body.push_back(Coord(0, 2));
+    body.push_back(Coord(0, -1));
+    body.push_back(Coord(1, 0));
+    body.push_back(Coord(-1, 0));
 
     Car car(pixel, body);
 
     while (1)
     {
         if (Game().haveStopSignal())
+        {
+            GlobalConfig::getInstance()->currentPeopleX = curX;
+            GlobalConfig::getInstance()->currentPeopleY = curY;
+            Game().saveGame();
             return;
+        }
         int oldX = curX, oldY = curY;
         if (Game().controlDirectionKey(curX, curY, GlobalConfig::getInstance()->lastSignal))
         {
@@ -149,14 +168,30 @@ void testPeople()
     }
 }
 
+void Game::notiListener(){
+    while (1){
+        if (Game().haveStopSignal()){
+            Game().clearConsole();
+            Game().goTo(1,1);
+            cout<<"you lose!!!"<<endl;
+            cout<<"Press Q to exit";
+            return;
+        }
+    }
+}
+
 void Game::showGroundPlay()
 {
+    Game().loadGame();
+    GlobalConfig::getInstance()->resetMatrix();
     Game().clearConsole();
     Game().goTo(1, 40);
+
     cout << "@ Press Q to quit" << endl;
 
     thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
+    thread noti(Game().notiListener);
 
     thread testObj(testRun);
     thread people(testPeople);
@@ -165,7 +200,10 @@ void Game::showGroundPlay()
     draw.join();
 
     people.join();
+    noti.join();
     testObj.join();
+
+    GlobalConfig::getInstance()->lastSignal = ' ';
 }
 
 void Game::showMenu()
@@ -183,7 +221,8 @@ void Game::showMenu()
         Game().clearConsole();
         //instruction
         Game().goTo(1, 3);
-        cout<<"Type \'W\' for up"<<endl<<" Type \'S\' for down";
+        cout << "Type \'W\' for up" << endl
+             << " Type \'S\' for down";
 
         //content
         Game().goTo((Game().getColumns() - title.length()) / 2, 1); //align center
@@ -191,30 +230,64 @@ void Game::showMenu()
 
         for (int i = 0; i < 3; i++)
         {
-            Game().goTo((Game().getColumns() - options[i].length()) / 2, 10 + i*2);
-            cout<<options[i];
+            Game().goTo((Game().getColumns() - options[i].length()) / 2, 10 + i * 2);
+            cout << options[i];
 
-            if (choice == i){
-                Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 10 + i*2);
-                cout<<">>>";
+            if (choice == i)
+            {
+                Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 10 + i * 2);
+                cout << ">>>";
             }
         }
 
         char getKey = toupper(getch());
-        switch (getKey){
-            case 'W':
+        switch (getKey)
+        {
+        case 'W':
             choice = (!choice) ? numOfOptions - 1 : choice - 1;
             break;
-            case 'S':
+        case 'S':
             choice = (choice + 1) % numOfOptions;
             break;
-            case 13: //Enter
-            switch(choice){
-                case 0: Game().showGroundPlay(); break;
-                case 1: break;
-                case 2: return;
+        case 13: //Enter
+            switch (choice)
+            {
+            case 0:
+                Game().showGroundPlay();
+                break;
+            case 1:
+                break;
+            case 2:
+                return;
             }
             break;
         }
+    }
+}
+
+void Game::saveGame()
+{
+    ofstream gameData;
+    gameData.open("game_data.txt");
+    gameData << GlobalConfig::getInstance()->currentScore << endl;
+    gameData << GlobalConfig::getInstance()->currentPeopleX << " " << GlobalConfig::getInstance()->currentPeopleY << endl;
+    gameData.close();
+}
+
+void Game::loadGame()
+{
+    ifstream gameData;
+    gameData.open("game_data.txt");
+    if (!gameData.is_open())
+    {
+        //set init config
+        GlobalConfig::getInstance()->initNewData();
+    }
+    else
+    {
+        gameData >> GlobalConfig::getInstance()->currentScore;
+        gameData >> GlobalConfig::getInstance()->currentPeopleX >> GlobalConfig::getInstance()->currentPeopleY;
+        //add more data if need
+        gameData.close();
     }
 }

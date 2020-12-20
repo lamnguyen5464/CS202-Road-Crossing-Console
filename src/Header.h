@@ -2,6 +2,7 @@
 #include <thread>
 #include <vector>
 #include <Windows.h>
+#include <fstream>
 #include <conio.h>
 #include "Game.hpp"
 #include "Coord.hpp"
