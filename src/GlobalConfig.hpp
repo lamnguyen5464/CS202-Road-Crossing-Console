@@ -12,6 +12,7 @@ private:
     static GlobalConfig* instance;
 public:
     queue<Pixel*> drawingQueue;
+    bool** matrix;
     char lastSignal;
     static GlobalConfig* getInstance();
     ~GlobalConfig();

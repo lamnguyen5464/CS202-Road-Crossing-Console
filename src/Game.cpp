@@ -94,6 +94,13 @@ void Game::addPixelToQueue(int x, int y, char pixel)
 {
     Pixel *p = new Pixel(x, y, pixel);
     GlobalConfig::getInstance()->drawingQueue.push(p);
+    // for (int i = 0; i < People::getPeople()->body.size(); ++i) {
+    //     if (People::getPeople()->curX + People::getPeople()->body[i].x == p->x && People::getPeople()->curY + People::getPeople()->body[i].y 
+    //     && pixel != ' ') GlobalConfig::getInstance()->lastSignal = 'Q';
+    // }
+    if (pixel == ' ') GlobalConfig::getInstance()->matrix[x][y] = false;
+    else
+        GlobalConfig::getInstance()->matrix[x][y] = true;
 }
 
 void Game::eventKeyBoardListener()
