@@ -21,6 +21,9 @@ class GlobalConfig{
     void resetMatrix();
     void initNewData();
     static GlobalConfig* getInstance();
+    ~GlobalConfig();
 };
+
+
 
 #endif

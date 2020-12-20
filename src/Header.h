@@ -9,6 +9,7 @@
 #include "Game.hpp"
 #include "Object.hpp"
 #include "GlobalConfig.hpp"
+#include "People.h"
 using namespace std;
 
 #ifndef header

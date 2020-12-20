@@ -35,6 +35,6 @@ void GlobalConfig::resetMatrix()
 void GlobalConfig::initNewData()
 {
     currentScore = 0;
-    currentPeopleX = Game::getColumns() / 3;
-    currentPeopleY = Game::getRows() - 1;
+    People::getPeople()->curX = Game::getColumns() / 2;
+    People::getPeople()->curY = Game::getRows() - 1;
 }

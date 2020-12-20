@@ -52,6 +52,7 @@ bool Game::controlDirectionKey(int &curX, int &curY, char signal)
     switch (signal)
     {
     case 'W':
+        // if curY == 1 next stage
         curY--;
         return 1;
     case 'S':
@@ -100,7 +101,7 @@ void Game::addPixelToQueue(int x, int y, char pixel)
 
     char tmp = GlobalConfig::getInstance()->drawing_matrix[x][y];
 
-    if ( pixel != ' ' && tmp != ' ')
+    if (pixel != ' ' && tmp != ' ')
     {
         GlobalConfig::getInstance()->lastSignal = 'Q';
     }
@@ -121,68 +122,58 @@ void Game::eventKeyBoardListener()
 
 void testRun()
 {
-    int curX = 10, curY = 10;
-
-    char pixel = '\xDB';
-    vector<Coord> body;
-    body.push_back(Coord(0, 0));
-    body.push_back(Coord(1, 0));
-    body.push_back(Coord(0, 1));
-    body.push_back(Coord(1, 1));
-    body.push_back(Coord(2, 1));
-    body.push_back(Coord(-1, 1));
-    Truck obj(pixel, body);
+    Truck obj;
     obj.run();
+    if (Game().haveStopSignal())
+        return;
+}
+
+void testCar()
+{
+    Car obj;
+    obj.run();
+    if (Game().haveStopSignal())
+        return;
 }
 
 void testPeople()
 {
-    int curX = GlobalConfig::getInstance()->currentPeopleX,
-        curY = GlobalConfig::getInstance()->currentPeopleY;
-
-    char pixel = '\xDB';
-    vector<Coord> body;
-    body.push_back(Coord(0, 0));
-    body.push_back(Coord(0, -1));
-    body.push_back(Coord(1, 0));
-    body.push_back(Coord(-1, 0));
-
-    Car car(pixel, body);
-
+    People::getPeople()->draw();
     while (1)
     {
         if (Game().haveStopSignal())
         {
-            GlobalConfig::getInstance()->currentPeopleX = curX;
-            GlobalConfig::getInstance()->currentPeopleY = curY;
             Game().saveGame();
             return;
         }
-        int oldX = curX, oldY = curY;
-        if (Game().controlDirectionKey(curX, curY, GlobalConfig::getInstance()->lastSignal))
+        int oldX = People::getPeople()->curX, oldY = People::getPeople()->curY;
+        if (Game().controlDirectionKey(People::getPeople()->curX, People::getPeople()->curY, GlobalConfig::getInstance()->lastSignal))
         {
-            car.erase(oldX, oldY);
-            car.draw(curX, curY);
+            People::getPeople()->erase(oldX, oldY);
+            People::getPeople()->draw();
+
             GlobalConfig::getInstance()->lastSignal = ' ';
         }
     }
 }
 
-void Game::notiListener(){
-    while (1){
-        if (Game().haveStopSignal()){
-            Game().clearConsole();
-            Game().goTo(1,1);
-            cout<<"you lose!!!"<<endl;
-            cout<<"Press Q to exit";
-            return;
-        }
-    }
+void Game::notiListener()
+{
+    // while (1)
+    // {
+    //     if (Game().haveStopSignal())
+    //     {
+    //         // Game().clearConsole();
+    //         Game().goTo(1, 1);
+    //         cout << "you lose!!!" << endl;
+    //         cout << "Press Q to exit";
+    //         return;
+    //     }
+    // }
 }
 
 void Game::showGroundPlay()
 {
-    Game().loadGame();
     GlobalConfig::getInstance()->resetMatrix();
     Game().clearConsole();
     Game().goTo(1, 40);
@@ -192,23 +183,29 @@ void Game::showGroundPlay()
     thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
     thread noti(Game().notiListener);
-
+ 
     thread testObj(testRun);
+    // thread testOther(testCar);
     thread people(testPeople);
 
-    keyboardListener.join();
-    draw.join();
-
     people.join();
-    noti.join();
     testObj.join();
+    // testOther.join();
+
+    draw.join();
+    noti.join();
+
+    Game().goTo(1,1);
+    cout<<"You lose!"<<"Press Q to exit"<<endl;
+
+    keyboardListener.join();
 
     GlobalConfig::getInstance()->lastSignal = ' ';
 }
 
 void Game::showMenu()
 {
-    int numOfOptions = 3;
+    const int numOfOptions = 3;
     string options[numOfOptions] = {
         "New game",
         "Load game",
@@ -253,9 +250,12 @@ void Game::showMenu()
             switch (choice)
             {
             case 0:
+                GlobalConfig::getInstance()->initNewData();
                 Game().showGroundPlay();
                 break;
             case 1:
+                Game().loadGame();
+                Game().showGroundPlay();
                 break;
             case 2:
                 return;
@@ -270,7 +270,7 @@ void Game::saveGame()
     ofstream gameData;
     gameData.open("game_data.txt");
     gameData << GlobalConfig::getInstance()->currentScore << endl;
-    gameData << GlobalConfig::getInstance()->currentPeopleX << " " << GlobalConfig::getInstance()->currentPeopleY << endl;
+    gameData << People::getPeople()->curX << " " << People::getPeople()->curY << endl;
     gameData.close();
 }
 
@@ -286,7 +286,7 @@ void Game::loadGame()
     else
     {
         gameData >> GlobalConfig::getInstance()->currentScore;
-        gameData >> GlobalConfig::getInstance()->currentPeopleX >> GlobalConfig::getInstance()->currentPeopleY;
+        gameData >> People::getPeople()->curX >> People::getPeople()->curY;
         //add more data if need
         gameData.close();
     }
