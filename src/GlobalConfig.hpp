@@ -6,15 +6,18 @@
 
 using namespace std;
 
-
-class GlobalConfig{
-    private:
+class GlobalConfig {
+private:
     GlobalConfig();
     static GlobalConfig* instance;
-    public:
+public:
     queue<Pixel*> drawingQueue;
+    bool** matrix;
     char lastSignal;
     static GlobalConfig* getInstance();
+    ~GlobalConfig();
 };
+
+
 
 #endif
