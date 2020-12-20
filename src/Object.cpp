@@ -10,20 +10,58 @@ Object::Object(int x, int y, int z, int t) {
     switch (curY)
     {
     case 20:
-        body.push_back(Coord(0, 0));
+        /*body.push_back(Coord(0, 0));
         body.push_back(Coord(1, 0));
         body.push_back(Coord(0, 1));
         body.push_back(Coord(1, 1));
         body.push_back(Coord(2, 1));
+        body.push_back(Coord(-1, 1));*/
+        body.push_back(Coord(0, 0));
+        body.push_back(Coord(1, 0));
+        body.push_back(Coord(2, 0));
+        body.push_back(Coord(0, 1));
+        body.push_back(Coord(1, 1));
+        body.push_back(Coord(2, 1));
+        body.push_back(Coord(3, 1));
+        body.push_back(Coord(4, 1));
         body.push_back(Coord(-1, 1));
+        body.push_back(Coord(-2, 1));
         break;
     case 30:
-        body.push_back(Coord(0, 0));
+        /*body.push_back(Coord(0, 0));
         body.push_back(Coord(1, 0));
         body.push_back(Coord(0, 1));
         body.push_back(Coord(1, 1));
         body.push_back(Coord(2, 1));
+        body.push_back(Coord(-1, 1));*/
+        body.push_back(Coord(0, 0));
+        body.push_back(Coord(0, 1));
+        body.push_back(Coord(1, 0));
+        body.push_back(Coord(1, 1));
+        body.push_back(Coord(2, 1));
         body.push_back(Coord(-1, 1));
+        body.push_back(Coord(-1, 0));
+        break;
+    case 10:
+        body.push_back(Coord(0, 3));
+        body.push_back(Coord(1, 2));
+        body.push_back(Coord(1, 3));
+        body.push_back(Coord(2, 1));
+        body.push_back(Coord(2, 2));
+        body.push_back(Coord(2, 3));
+        body.push_back(Coord(3, 1));
+        body.push_back(Coord(3, 2));
+        body.push_back(Coord(3, 3));
+        body.push_back(Coord(4, 0));
+        body.push_back(Coord(5, 0));
+        break;
+    case 5:
+        body.push_back(Coord(1, 0));
+        body.push_back(Coord(2, 0));
+        body.push_back(Coord(3, 0));
+        body.push_back(Coord(0, 1));
+        body.push_back(Coord(-1, 1));
+        body.push_back(Coord(-2, 1));
         break;
     default:
         break;
@@ -31,8 +69,8 @@ Object::Object(int x, int y, int z, int t) {
 }
 
 // functions
-void Object::draw(int x, int y){
-    for(int i = 0; i < body.size(); i++){
+void Object::draw(int x, int y) {
+    for (int i = 0; i < body.size(); i++) {
         Game().addPixelToQueue(x + body[i].x, y + body[i].y, pixel);
         // for (int i = 0; i < People::getPeople()->body.size(); ++i)
         // {
@@ -50,7 +88,7 @@ void Object::erase(int x, int y)
     }
 }
 
-void Object::drawAll() 
+void Object::drawAll()
 {
     int i = 0;
     while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
@@ -60,7 +98,7 @@ void Object::drawAll()
     }
 }
 
-void Object::eraseAll() 
+void Object::eraseAll()
 {
     int i = 0;
     while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
@@ -70,7 +108,7 @@ void Object::eraseAll()
     }
 }
 
-void Object::updateCursor() 
+void Object::updateCursor()
 {
     curX += move;
     if (move == 1 && curX == 21) curX = 1;
@@ -88,17 +126,17 @@ void Object::run()
     }
 }
 
-void Car::run()
-{
-    Object::run();
-}
 
-void Truck::run()
-{
-    Object::run();
-}
 
-Car::Car() : Object(1, 20, 1, 20) {}
-Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, -20) {}
+
+
+
+
+
+
+
+
+
+
 
 
