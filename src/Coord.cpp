@@ -1,4 +1,3 @@
-#include "Coord.hpp"
 #include "Header.h"
 
 Coord::Coord(int x, int y){

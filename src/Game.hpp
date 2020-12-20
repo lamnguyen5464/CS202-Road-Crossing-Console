@@ -1,4 +1,6 @@
 #include <thread>
+#include "Object.hpp"
+#include <vector>
 
 #ifndef Game_hpp
 #define Game_hpp
@@ -14,7 +16,7 @@ public:
     static void clearConsole();
     static void goTo(int posX, int posY);
     static void setWindowSize(int width, int height);
-    static bool controlDirectionKey(int &curX, int &curY, char signal);
+    static bool controlDirectionKey(int& curX, int& curY, char signal);
     static bool haveStopSignal();
     static void addPixelToQueue(int x, int y, char pixel);
     static int getColumns();
@@ -27,6 +29,8 @@ public:
     //in other thread
     static void drawPixelInQueue();
     static void eventKeyBoardListener();
+
+    static void checkTouch();
 };
 
 #endif

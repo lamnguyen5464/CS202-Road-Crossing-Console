@@ -6,8 +6,7 @@
 
 using namespace std;
 
-
-class GlobalConfig{
+class GlobalConfig {
 private:
     GlobalConfig();
     static GlobalConfig* instance;
@@ -15,6 +14,9 @@ public:
     queue<Pixel*> drawingQueue;
     char lastSignal;
     static GlobalConfig* getInstance();
+    ~GlobalConfig();
 };
+
+
 
 #endif

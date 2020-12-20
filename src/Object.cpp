@@ -1,19 +1,44 @@
 #include "Header.h"
 
 // constructors
-Object::Object(char pixel, vector<Coord> body, int x, int y, int z, int t){
-    this->pixel = pixel;
-    this->body = body;
+Object::Object(int x, int y, int z, int t) {
     curX = x;
     curY = y;
     move = z;
     delta = t;
+    pixel = '\xDB';
+    switch (curY)
+    {
+    case 20:
+        body.push_back(Coord(0, 0));
+        body.push_back(Coord(1, 0));
+        body.push_back(Coord(0, 1));
+        body.push_back(Coord(1, 1));
+        body.push_back(Coord(2, 1));
+        body.push_back(Coord(-1, 1));
+        break;
+    case 30:
+        body.push_back(Coord(0, 0));
+        body.push_back(Coord(1, 0));
+        body.push_back(Coord(0, 1));
+        body.push_back(Coord(1, 1));
+        body.push_back(Coord(2, 1));
+        body.push_back(Coord(-1, 1));
+        break;
+    default:
+        break;
+    }
 }
 
 // functions
 void Object::draw(int x, int y){
     for(int i = 0; i < body.size(); i++){
         Game().addPixelToQueue(x + body[i].x, y + body[i].y, pixel);
+        // for (int i = 0; i < People::getPeople()->body.size(); ++i)
+        // {
+        //     if (p->pixel != ' ' && p->x == People::getPeople()->curX + People::getPeople()->body[i].x && p->y == People::getPeople()->curY + People::getPeople()->body[i].y)
+        //         GlobalConfig::getInstance()->lastSignal = 'Q';
+        // }
     }
 }
 
@@ -73,5 +98,7 @@ void Truck::run()
     Object::run();
 }
 
-Car::Car(char pixel, vector<Coord> body) : Object(pixel, body, 1, 30, 1, 20) {}
-Truck::Truck(char pixel, vector<Coord> body) : Object(pixel, body, Game::getColumns() - 1, 20, -1, -20) {}
+Car::Car() : Object(1, 20, 1, 20) {}
+Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, -20) {}
+
+

@@ -47,11 +47,12 @@ void Game::setWindowSize(int width, int height)
     MoveWindow(consoleWindow, r.left, r.top, width, height, TRUE);
 }
 
-bool Game::controlDirectionKey(int &curX, int &curY, char signal)
+bool Game::controlDirectionKey(int& curX, int& curY, char signal)
 {
     switch (signal)
     {
     case 'W':
+    // if curY == 1 next stage
         curY--;
         return 1;
     case 'S':
@@ -82,6 +83,7 @@ void Game::drawPixelInQueue()
             GlobalConfig::getInstance()->drawingQueue.pop();
             Game().goTo(p->x, p->y);
             cout << p->pixel;
+            
         }
         if (Game().haveStopSignal())
             return;
@@ -106,57 +108,34 @@ void Game::eventKeyBoardListener()
 }
 
 void testRun()
-{
-
-    char pixel = '\xDB';
-    vector<Coord> body;
-    body.push_back(Coord(0, 0));
-    body.push_back(Coord(1, 0));
-    body.push_back(Coord(0, 1));
-    body.push_back(Coord(1, 1));
-    body.push_back(Coord(2, 1));
-    body.push_back(Coord(-1, 1));
-    Truck obj(pixel, body);
-
+{  
+    Truck obj;
     obj.run();
+    if (Game().haveStopSignal())
+        return;
 }
 
 void testCar () {
-    char pixel = '\xDB';
-    vector<Coord> body;
-    body.push_back(Coord(0, 0));
-    body.push_back(Coord(1, 0));
-    body.push_back(Coord(0, 1));
-    body.push_back(Coord(1, 1));
-    body.push_back(Coord(2, 1));
-    body.push_back(Coord(-1, 1));
-    Car obj(pixel, body);
-
+    Car obj;
     obj.run();
+    if (Game().haveStopSignal())
+        return;
 }
 
 void testPeople()
 {
-    int curX = 10, curY = 10;
-
-    char pixel = '#';
-    vector<Coord> body;
-    body.push_back(Coord(0, 0));
-    body.push_back(Coord(1, 1));
-    body.push_back(Coord(-1, 1));
-    body.push_back(Coord(0, 2));
-
-    Car car(pixel, body);
+    People::getPeople()->draw();
 
     while (1)
     {
         if (Game().haveStopSignal())
             return;
-        int oldX = curX, oldY = curY;
-        if (Game().controlDirectionKey(curX, curY, GlobalConfig::getInstance()->lastSignal))
+        int oldX = People::getPeople()->curX, oldY = People::getPeople()->curY;
+        if (Game().controlDirectionKey(People::getPeople()->curX, People::getPeople()->curY, GlobalConfig::getInstance()->lastSignal))
         {
-            car.erase(oldX, oldY);
-            car.draw(curX, curY);
+            People::getPeople()->erase(oldX, oldY);
+            People::getPeople()->draw();
+
             GlobalConfig::getInstance()->lastSignal = ' ';
         }
     }

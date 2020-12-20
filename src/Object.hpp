@@ -15,7 +15,7 @@ private:
     int curX, curY, delta, move;
 public:
     Object() = default;
-    Object(char pixel, vector<Coord> body, int x, int y, int z, int t);
+    Object(int x, int y, int z, int t);
     void draw(int x, int y);
     void erase(int x, int y);
     void drawAll();
@@ -27,7 +27,7 @@ public:
 class Car : public Object
 {
 public: 
-    Car(char pixel, vector <Coord> body);
+    Car();
     void run();
 
 };
@@ -35,9 +35,11 @@ public:
 class Truck : public Object 
 {
 public:
-    Truck(char pixel, vector <Coord> body);
+    Truck();
     void run();
 };
+
+
 
 
 #endif
