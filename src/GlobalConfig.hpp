@@ -15,6 +15,7 @@ class GlobalConfig{
     queue<Pixel*> drawingQueue;
     char lastSignal;
     static GlobalConfig* getInstance();
+    
 };
 
 #endif

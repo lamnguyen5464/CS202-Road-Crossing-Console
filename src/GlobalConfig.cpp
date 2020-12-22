@@ -13,3 +13,4 @@ GlobalConfig* GlobalConfig::getInstance(){
     }
     return instance;
 }
+

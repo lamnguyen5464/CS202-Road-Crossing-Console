@@ -155,7 +155,7 @@ void Game::showGroundPlay()
     Game().goTo(1, 40);
     cout << "@ Press Q to quit" << endl;
 
-    thread keyboardListener(Game().eventKeyBoardListener);
+    std::thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
 
     thread testObj(testRun);
@@ -168,6 +168,101 @@ void Game::showGroundPlay()
     testObj.join();
 }
 
+void Game::fontsize(int x, int y){
+    PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();  
+  lpConsoleCurrentFontEx->cbSize = sizeof(CONSOLE_FONT_INFOEX);  
+  GetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, lpConsoleCurrentFontEx);  
+  lpConsoleCurrentFontEx->dwFontSize.X = x;  
+  lpConsoleCurrentFontEx->dwFontSize.Y = y;  
+  SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, lpConsoleCurrentFontEx); 
+}
+
+void Game::textColor(int x){
+   HANDLE cout_handle=GetStdHandle(STD_OUTPUT_HANDLE);
+   cout_handle=GetStdHandle(STD_OUTPUT_HANDLE);
+   SetConsoleTextAttribute(cout_handle, x);
+}
+
+void Game::drawTitle(int height, int width) {
+    
+    const signed char TITLE[][82] = { { 32,95,95,95,95,95,32,32,        32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		  32,32,32,32,32,'_',32,	   32,32,32,32,32,  32,32,32,'_','_','_','_',32,	32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,	   32,32,32,32,32,		 32,32,32,	  32,32,32,32,32,32,32,		   },
+						                { (char) 178,32,32,'_','_',32,92,32,	 32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		  32,32,32,32,(char) 178,32,(char) 178,	   32,32,32,32,32,  32,32,'/',32,'_','_','_',(char) 178,	32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,	   32,32,32,32,32,		 32,'_',32,	  32,32,32,32,32,32,32,		   },
+						                { (char) 178,32,(char) 178,'_','_',')',32,')', 32,32,'_','_','_',32,32,	 32,32,'_','_',32,'_',32,	  32,32,'_','_',(char) 178,32,(char) 178,	   32,32,32,32,32,  32,'/',32,32,(char) 178,32,32,32,		32,'_',32,'_','_',32,	 32,32,'_','_','_',32,32,	 32,'_','_','_',32,    32,'_','_','_',32,	 '(','_',')', 32,'_',32,'_','_',32,32,	  32,32,'_','_',32,'_',32},
+							            { (char) 178,32,32,'_',32,32,'/',32,	 32,'/',32,'_',32,'\\',32,	 32,'/',32,'_','\'',32,(char) 178,	  32,'/',32,'_',32,32,(char) 178,	   32,32,32,32,32,  (char) 124,'|',32,32,(char) 178,32,32,32,		(char) 178,32,'\'','_','_',(char) 178, 32,'/',32,'_',32,'\\',32,	 '/',32,'_','_',(char) 178,   '/',32,'_','_',(char) 178,   (char) 178,32,(char) 178,  '|',32,'\'','_',32,'\\',32, 32,'/',32,'_','\'',32,(char) 178},
+							            { (char) 178,32,(char) 178,32,92,32,92,32,	 '(',32,'(','_',')',32,')',	 '(',32,'(','_',')',32,(char) 178,	  '(',32,'(','_',')',32,(char) 178,   32,32,32,32,32,  32,'\\',32,32,(char) 178,'_','_','_',  (char) 178,32,(char) 178,32,32,32,	 '(',32,'(','_',')',32,')',  '\\','_','_',32,'\\', '\\','_','_',32,'\\', (char) 178,32,(char) 178,  '|',32,(char) 178,32,'|',32,'|',	  '(',32,'(','_',')',32,(char) 178},
+							            { (char) 178,'_',(char) 178,32,32,92,'_',92,	 32,'\\','_','_','_','/',32, 32,'\\','_','_',',','_',(char) 178, 32,'\\','_','_',',','_',(char) 178, 32,32,32,32,32,  32,32,'\\','_','_','_','_',(char) 178, (char) 178,'_',(char) 178,32,32,32,	 32,'\\','_','_','_','/',32, (char) 178,'_','_','_','/',  (char) 178,'_','_','_','/',  (char) 178,'_',(char) 178, '|','_',(char) 178,32,'|','_','|', 32,'\\','_','_',',',32,(char) 178},
+							            { 32,32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		  32,32,32,32,32,32,32,		   32,32,32,32,32,  32,32,32,32,32,32,32,32,		32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,	   32,32,32,32,32,		 32,32,32,	  32,32,32,32,32,32,32,		  32,(char) 178,'_','_','_','/'} };
+
+    //(char)168->(char)124
+    int row = (getRows()- height) / 2-10;
+	int col = (getColumns() - width) / 2;
+	int i, j;
+	for (i = 0; i < height; ++i) {
+		goTo(col, row++);
+		for (j = 0; j < width; ++j) {
+			Game().textColor(ColorCode_Yellow);
+			cout << TITLE[i][j];
+		}
+	}
+	Game().textColor(default_ColorCode);
+}
+
+void Game::drawRectangle(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY){
+   --topLeftX;
+	--topLeftY;
+	++bottomRightX;
+	++bottomRightY; 
+	
+	int i;
+
+    Game().goTo(topLeftX, topLeftY);
+	cout << char(218);
+	for (i = topLeftX + 1; i < bottomRightX; ++i)
+		cout << char(196);
+	cout << char(191);
+
+	for (i = topLeftY + 1; i < bottomRightY; ++i) {
+		Game().goTo(topLeftX, i);
+		cout << char(179);
+		Game().goTo(bottomRightX, i);
+		cout << char(179);
+	}
+
+	Game().goTo(topLeftX, bottomRightY);
+	cout << char(192);
+	for (i = topLeftX + 1; i < bottomRightX; ++i)
+		cout << char(196);
+	cout << char(217);
+}
+
+void Game::removeRectangle(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY){
+    --topLeftX;
+	--topLeftY;
+	++bottomRightX;
+	++bottomRightY;
+
+	int i;
+
+    Game().goTo(topLeftX, topLeftY);
+	cout << " ";
+	for (i = topLeftX + 1; i < bottomRightX; ++i)
+		cout << " ";
+	cout << " ";
+
+	for (i = topLeftY + 1; i < bottomRightY; ++i) {
+		Game().goTo(topLeftX, i);
+		cout << " ";
+		Game().goTo(bottomRightX, i);
+		cout << " ";
+	}
+
+	Game().goTo(topLeftX, bottomRightY);
+	cout << " ";
+	for (i = topLeftX + 1; i < bottomRightX; ++i)
+		cout << " ";
+	cout << " ";
+}
+
 void Game::showMenu()
 {
     int numOfOptions = 3;
@@ -176,26 +271,38 @@ void Game::showMenu()
         "Load game",
         "Exit",
     };
-    string title = "----------MENU----------";
+    string title = "---------MENU---------";
+    string name="ROSSING ROAD";
     int choice = 0;
     while (1)
     {
         Game().clearConsole();
         //instruction
-        Game().goTo(1, 3);
+        Game().goTo(1, 30);
         cout<<"Type \'W\' for up"<<endl<<" Type \'S\' for down";
+        Game().drawRectangle(1, 29, 18,32);
 
         //content
-        Game().goTo((Game().getColumns() - title.length()) / 2, 1); //align center
+        Game().goTo((Game().getColumns() - title.length()) / 2, 18); //allign center
+        Game().textColor(ColorCode_Yellow);
         cout << title;
+        Game().textColor(ColorCode_DarkBlue);
+        Game().goTo(Game().getColumns()/2, 2);
+
+        Game().drawTitle(7, 82);
+        Game().textColor(default_ColorCode);
+
+    Game().drawRectangle(getColumns()/2-10, getRows()/4+8, getColumns()/2+10,getRows()/4+15);
 
         for (int i = 0; i < 3; i++)
-        {
-            Game().goTo((Game().getColumns() - options[i].length()) / 2, 10 + i*2);
+        {   
+            Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i*2);
+            Game().textColor(ColorCode_DarkGreen);
             cout<<options[i];
 
             if (choice == i){
-                Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 10 + i*2);
+                Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 20 + i*2);
+                Game().textColor(ColorCode_Grey);
                 cout<<">>>";
             }
         }

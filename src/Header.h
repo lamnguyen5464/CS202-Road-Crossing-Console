@@ -1,6 +1,10 @@
 #include <iostream>
 #include <thread>
+#include <cwchar>
+#include <dos.h>
+#include <fstream>
 #include <vector>
+#include <string>
 #include <Windows.h>
 #include <conio.h>
 #include "Game.hpp"
