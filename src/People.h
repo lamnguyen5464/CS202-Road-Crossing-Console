@@ -1,4 +1,4 @@
-#include "Coord.hpp"
+#include "Coord.h"
 #include <vector>
 using namespace std;
 
@@ -9,7 +9,7 @@ class People
 {
 private:
     People();
-    static People *ppl;
+    static People* ppl;
 
 public:
     char pixel;

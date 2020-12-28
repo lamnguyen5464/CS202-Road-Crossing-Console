@@ -6,9 +6,9 @@ GlobalConfig::GlobalConfig()
     lastSignal = ' ';
 }
 
-GlobalConfig *GlobalConfig::instance = nullptr;
+GlobalConfig* GlobalConfig::instance = nullptr;
 
-GlobalConfig *GlobalConfig::getInstance()
+GlobalConfig* GlobalConfig::getInstance()
 {
     if (instance == nullptr)
     {

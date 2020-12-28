@@ -47,7 +47,7 @@ void Game::setWindowSize(int width, int height)
     MoveWindow(consoleWindow, r.left, r.top, width, height, TRUE);
 }
 
-bool Game::controlDirectionKey(int &curX, int &curY, char signal)
+bool Game::controlDirectionKey(int& curX, int& curY, char signal)
 {
     switch (signal)
     {
@@ -79,7 +79,7 @@ void Game::drawPixelInQueue()
     {
         while (GlobalConfig::getInstance()->drawingQueue.size() != 0)
         {
-            Pixel *p = GlobalConfig::getInstance()->drawingQueue.front();
+            Pixel* p = GlobalConfig::getInstance()->drawingQueue.front();
             GlobalConfig::getInstance()->drawingQueue.pop();
             Game().goTo(p->x, p->y);
             cout << p->pixel;
@@ -91,7 +91,7 @@ void Game::drawPixelInQueue()
 
 void Game::addPixelToQueue(int x, int y, char pixel)
 {
-    Pixel *p = new Pixel(x, y, pixel);
+    Pixel* p = new Pixel(x, y, pixel);
 
     //validate
     if (x < 0 || y < y || x > Game().getColumns() || y > Game().getRows())
@@ -113,14 +113,14 @@ void Game::eventKeyBoardListener()
 {
     while (1)
     {
-        char t = toupper(getch());
+        char t = toupper(_getch());
         GlobalConfig::getInstance()->lastSignal = t;
         if (Game().haveStopSignal())
             return;
     }
 }
 
-void testRun()
+void TruckRun()
 {
     Truck obj;
     obj.run();
@@ -128,9 +128,23 @@ void testRun()
         return;
 }
 
-void testCar()
+void CarRun()
 {
     Car obj;
+    obj.run();
+    if (Game().haveStopSignal())
+        return;
+}
+
+void DinosaurRun() {
+    Dinosaur obj;
+    obj.run();
+    if (Game().haveStopSignal())
+        return;
+}
+
+void BirdFly() {
+    Bird obj;
     obj.run();
     if (Game().haveStopSignal())
         return;
@@ -183,20 +197,24 @@ void Game::showGroundPlay()
     thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
     thread noti(Game().notiListener);
- 
-    thread testObj(testRun);
-    // thread testOther(testCar);
+
+    thread T(TruckRun);
+    thread C(CarRun);
+    thread D(DinosaurRun);
+    thread B(BirdFly);
     thread people(testPeople);
 
     people.join();
-    testObj.join();
-    // testOther.join();
+    T.join();
+    C.join();
+    D.join();
+    B.join();
 
     draw.join();
     noti.join();
 
-    Game().goTo(1,1);
-    cout<<"You lose!"<<"Press Q to exit"<<endl;
+    Game().goTo(1, 1);
+    cout << "You lose!" << "Press Q to exit" << endl;
 
     keyboardListener.join();
 
@@ -219,7 +237,7 @@ void Game::showMenu()
         //instruction
         Game().goTo(1, 3);
         cout << "Type \'W\' for up" << endl
-             << " Type \'S\' for down";
+            << " Type \'S\' for down";
 
         //content
         Game().goTo((Game().getColumns() - title.length()) / 2, 1); //align center
@@ -237,7 +255,7 @@ void Game::showMenu()
             }
         }
 
-        char getKey = toupper(getch());
+        char getKey = toupper(_getch());
         switch (getKey)
         {
         case 'W':
