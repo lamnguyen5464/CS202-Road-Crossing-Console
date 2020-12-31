@@ -1,16 +1,43 @@
 #include "Header.h"
 
 using namespace std;
-GlobalConfig::GlobalConfig(){
+GlobalConfig::GlobalConfig()
+{
     lastSignal = ' ';
 }
 
-GlobalConfig* GlobalConfig::instance = nullptr;
+GlobalConfig *GlobalConfig::instance = nullptr;
 
-GlobalConfig* GlobalConfig::getInstance(){
-    if (instance == nullptr){
+GlobalConfig *GlobalConfig::getInstance()
+{
+    if (instance == nullptr)
+    {
         instance = new GlobalConfig();
     }
     return instance;
 }
 
+<<<<<<< HEAD
+=======
+void GlobalConfig::resetMatrix()
+{
+    drawing_matrix.clear();
+    vector<char> tmp;
+    for (int i = 0; i <= Game().getColumns(); i++)
+    {
+        tmp.push_back(' ');
+    }
+
+    for (int i = 0; i <= Game().getColumns(); i++)
+    {
+        drawing_matrix.push_back(tmp);
+    }
+}
+
+void GlobalConfig::initNewData()
+{
+    currentScore = 0;
+    People::getPeople()->curX = Game::getColumns() / 2;
+    People::getPeople()->curY = Game::getRows() - 1;
+}
+>>>>>>> main

@@ -1,6 +1,11 @@
+#include <thread>
+#include "Object.hpp"
+#include <vector>
+
 #ifndef Game_hpp
 #define Game_hpp
 
+<<<<<<< HEAD
 #define ColorCode_Black			0
 #define ColorCode_DarkBlue		1
 #define ColorCode_DarkGreen		2
@@ -20,6 +25,11 @@
 
 #define default_ColorCode		7
 class Game{
+=======
+
+class Game
+{
+>>>>>>> main
 private:
 public:
     static const int SCREEN_HEIGHT = 700;
@@ -28,23 +38,30 @@ public:
     static void clearConsole();
     static void goTo(int posX, int posY);
     static void setWindowSize(int width, int height);
-    static bool controlDirectionKey(int &curX, int &curY, char signal);
+    static bool controlDirectionKey(int& curX, int& curY, char signal);
     static bool haveStopSignal();
     static void addPixelToQueue(int x, int y, char pixel);
     static int getColumns();
     static int getRows();
+    static void saveGame();
+    static void loadGame();
 
+<<<<<<< HEAD
     //screens:
     void drawTitle(int height, int width);
     void drawRectangle(int, int, int, int);
     void removeRectangle(int, int, int, int);
 
+=======
+    // screens:
+>>>>>>> main
     static void showMenu();
     static void showGroundPlay();
 
     //in other thread
     static void drawPixelInQueue();
     static void eventKeyBoardListener();
+<<<<<<< HEAD
 
     
     //
@@ -53,6 +70,9 @@ public:
     //
     //void soundSetting(bool &soundOn) 
     //
+=======
+    static void notiListener();
+>>>>>>> main
 };
 
 #endif
