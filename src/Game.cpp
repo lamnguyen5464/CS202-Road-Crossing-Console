@@ -52,6 +52,7 @@ bool Game::controlDirectionKey(int &curX, int &curY, char signal)
     switch (signal)
     {
     case 'W':
+        // if curY == 1 next stage
         curY--;
         return 1;
     case 'S':
@@ -91,6 +92,20 @@ void Game::drawPixelInQueue()
 void Game::addPixelToQueue(int x, int y, char pixel)
 {
     Pixel *p = new Pixel(x, y, pixel);
+
+    //validate
+    if (x < 0 || y < y || x > Game().getColumns() || y > Game().getRows())
+    {
+        return;
+    }
+
+    char tmp = GlobalConfig::getInstance()->drawing_matrix[x][y];
+
+    if (pixel != ' ' && tmp != ' ')
+    {
+        GlobalConfig::getInstance()->lastSignal = 'Q';
+    }
+    GlobalConfig::getInstance()->drawing_matrix[x][y] = pixel;
     GlobalConfig::getInstance()->drawingQueue.push(p);
 }
 
@@ -107,65 +122,85 @@ void Game::eventKeyBoardListener()
 
 void testRun()
 {
-    int curX = 10, curY = 10;
-
-    char pixel = '\xDB';
-    vector<Coord> body;
-    body.push_back(Coord(0, 0));
-    body.push_back(Coord(1, 0));
-    body.push_back(Coord(0, 1));
-    body.push_back(Coord(1, 1));
-    body.push_back(Coord(2, 1));
-    body.push_back(Coord(-1, 1));
-    Truck obj(pixel, body);
-
+    Truck obj;
     obj.run();
+    if (Game().haveStopSignal())
+        return;
+}
+
+void testCar()
+{
+    Car obj;
+    obj.run();
+    if (Game().haveStopSignal())
+        return;
 }
 
 void testPeople()
 {
-    int curX = 10, curY = 10;
-
-    char pixel = '#';
-    vector<Coord> body;
-    body.push_back(Coord(0, 0));
-    body.push_back(Coord(1, 1));
-    body.push_back(Coord(-1, 1));
-    body.push_back(Coord(0, 2));
-
-    Car car(pixel, body);
-
+    People::getPeople()->draw();
     while (1)
     {
         if (Game().haveStopSignal())
-            return;
-        int oldX = curX, oldY = curY;
-        if (Game().controlDirectionKey(curX, curY, GlobalConfig::getInstance()->lastSignal))
         {
-            car.erase(oldX, oldY);
-            car.draw(curX, curY);
+            Game().saveGame();
+            return;
+        }
+        int oldX = People::getPeople()->curX, oldY = People::getPeople()->curY;
+        if (Game().controlDirectionKey(People::getPeople()->curX, People::getPeople()->curY, GlobalConfig::getInstance()->lastSignal))
+        {
+            People::getPeople()->erase(oldX, oldY);
+            People::getPeople()->draw();
+
             GlobalConfig::getInstance()->lastSignal = ' ';
         }
     }
 }
 
+void Game::notiListener()
+{
+    // while (1)
+    // {
+    //     if (Game().haveStopSignal())
+    //     {
+    //         // Game().clearConsole();
+    //         Game().goTo(1, 1);
+    //         cout << "you lose!!!" << endl;
+    //         cout << "Press Q to exit";
+    //         return;
+    //     }
+    // }
+}
+
 void Game::showGroundPlay()
 {
+    GlobalConfig::getInstance()->resetMatrix();
     Game().clearConsole();
     Game().goTo(1, 40);
+
     cout << "@ Press Q to quit" << endl;
 
     std::thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
-
+    thread noti(Game().notiListener);
+ 
     thread testObj(testRun);
+    // thread testOther(testCar);
     thread people(testPeople);
-
-    keyboardListener.join();
-    draw.join();
 
     people.join();
     testObj.join();
+    // testOther.join();
+
+    draw.join();
+    noti.join();
+
+    Game().goTo(1,1);
+    cout<<"You lose!"<<"Press Q to exit"<<endl;
+
+    keyboardListener.join();
+
+    GlobalConfig::getInstance()->lastSignal = ' ';
 }
 
 void Game::fontsize(int x, int y){
@@ -265,7 +300,7 @@ void Game::removeRectangle(int topLeftX, int topLeftY, int bottomRightX, int bot
 
 void Game::showMenu()
 {
-    int numOfOptions = 3;
+    const int numOfOptions = 3;
     string options[numOfOptions] = {
         "New game",
         "Load game",
@@ -278,9 +313,15 @@ void Game::showMenu()
     {
         Game().clearConsole();
         //instruction
+<<<<<<< HEAD
         Game().goTo(1, 30);
         cout<<"Type \'W\' for up"<<endl<<" Type \'S\' for down";
         Game().drawRectangle(1, 29, 18,32);
+=======
+        Game().goTo(1, 3);
+        cout << "Type \'W\' for up" << endl
+             << " Type \'S\' for down";
+>>>>>>> main
 
         //content
         Game().goTo((Game().getColumns() - title.length()) / 2, 18); //allign center
@@ -295,6 +336,7 @@ void Game::showMenu()
     Game().drawRectangle(getColumns()/2-10, getRows()/4+8, getColumns()/2+10,getRows()/4+15);
 
         for (int i = 0; i < 3; i++)
+<<<<<<< HEAD
         {   
             Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i*2);
             Game().textColor(ColorCode_DarkGreen);
@@ -304,24 +346,70 @@ void Game::showMenu()
                 Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 20 + i*2);
                 Game().textColor(ColorCode_Grey);
                 cout<<">>>";
+=======
+        {
+            Game().goTo((Game().getColumns() - options[i].length()) / 2, 10 + i * 2);
+            cout << options[i];
+
+            if (choice == i)
+            {
+                Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 10 + i * 2);
+                cout << ">>>";
+>>>>>>> main
             }
         }
 
         char getKey = toupper(getch());
-        switch (getKey){
-            case 'W':
+        switch (getKey)
+        {
+        case 'W':
             choice = (!choice) ? numOfOptions - 1 : choice - 1;
             break;
-            case 'S':
+        case 'S':
             choice = (choice + 1) % numOfOptions;
             break;
-            case 13: //Enter
-            switch(choice){
-                case 0: Game().showGroundPlay(); break;
-                case 1: break;
-                case 2: return;
+        case 13: //Enter
+            switch (choice)
+            {
+            case 0:
+                GlobalConfig::getInstance()->initNewData();
+                Game().showGroundPlay();
+                break;
+            case 1:
+                Game().loadGame();
+                Game().showGroundPlay();
+                break;
+            case 2:
+                return;
             }
             break;
         }
+    }
+}
+
+void Game::saveGame()
+{
+    ofstream gameData;
+    gameData.open("game_data.txt");
+    gameData << GlobalConfig::getInstance()->currentScore << endl;
+    gameData << People::getPeople()->curX << " " << People::getPeople()->curY << endl;
+    gameData.close();
+}
+
+void Game::loadGame()
+{
+    ifstream gameData;
+    gameData.open("game_data.txt");
+    if (!gameData.is_open())
+    {
+        //set init config
+        GlobalConfig::getInstance()->initNewData();
+    }
+    else
+    {
+        gameData >> GlobalConfig::getInstance()->currentScore;
+        gameData >> People::getPeople()->curX >> People::getPeople()->curY;
+        //add more data if need
+        gameData.close();
     }
 }
