@@ -1,0 +1,49 @@
+Merganch 'main' into Color/TiTle
+
+# Conflicts:
+#	src/Game.cpp
+#	src/Game.hpp
+#	src/GlobalConfig.cpp
+#	src/GlobalConfig.hpp
+#
+# It looks like you may be committing a merge.
+# If this is not correct, please run
+#	git update-ref -d MERGE_HEAD
+# and try again.
+
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch Color/TiTle
+# All conflicts fixed but you are still merging.
+#
+# Changes to be committed:
+#	new file:   Source Code (seminar)/Fix Observer Pattern/Function.cpp
+#	new file:   Source Code (seminar)/Fix Observer Pattern/Header.h
+#	new file:   Source Code (seminar)/Fix Observer Pattern/Main.cpp
+#	new file:   Source Code (seminar)/Implementation of Mediator Pattern/Function.cpp
+#	new file:   Source Code (seminar)/Implementation of Mediator Pattern/Header.h
+#	new file:   Source Code (seminar)/Implementation of Mediator Pattern/Main.cpp
+#	new file:   Source Code (seminar)/Implementation of Observer Pattern/function.cpp
+#	new file:   Source Code (seminar)/Implementation of Observer Pattern/header.h
+#	new file:   Source Code (seminar)/Implementation of Observer Pattern/main.cpp
+#	new file:   Source Code (seminar)/Naive Solution of Mediator Pattern/function.cpp
+#	new file:   Source Code (seminar)/Naive Solution of Mediator Pattern/header.h
+#	new file:   Source Code (seminar)/Naive Solution of Mediator Pattern/main.cpp
+#	new file:   Source Code (seminar)/Naive Solution of Observer Pattern/Function.cpp
+#	new file:   Source Code (seminar)/Naive Solution of Observer Pattern/Header.h
+#	new file:   Source Code (seminar)/Naive Solution of Observer Pattern/Source.cpp
+#	modified:   src/Coord.cpp
+#	modified:   src/Game.cpp
+#	modified:   src/Game.hpp
+#	modified:   src/GlobalConfig.cpp
+#	modified:   src/GlobalConfig.hpp
+#	modified:   src/Header.h
+#	modified:   src/Object.cpp
+#	modified:   src/Object.hpp
+#	new file:   src/People.cpp
+#	new file:   src/People.h
+#	new file:   src/game_data.txt
+#	modified:   src/main.cpp
+#
