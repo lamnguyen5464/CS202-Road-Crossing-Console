@@ -45,6 +45,7 @@ public:
     static int getRows();
     static void saveGame();
     static void loadGame();
+    static void onNextLevel();
 
 <<<<<<< HEAD
     //screens:
