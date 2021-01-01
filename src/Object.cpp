@@ -82,7 +82,7 @@ void Object::run()
     while (1) {
         if (Game().haveStopSignal()) return;
         drawAll();
-        Sleep(100);
+        Sleep(1000);
         eraseAll();
         updateCursor();
     }

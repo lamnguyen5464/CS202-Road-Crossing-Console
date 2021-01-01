@@ -19,7 +19,7 @@ class GlobalConfig{
     vector< vector<char> > drawing_matrix;
 
     void resetMatrix();
-    void initNewData();
+    void initNewData(int setScore);
     static GlobalConfig* getInstance();
     ~GlobalConfig();
 };

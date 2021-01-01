@@ -32,9 +32,9 @@ void GlobalConfig::resetMatrix()
     }
 }
 
-void GlobalConfig::initNewData()
+void GlobalConfig::initNewData(int setScore)
 {
-    currentScore = 0;
+    currentScore = setScore;
     People::getPeople()->curX = Game::getColumns() / 2;
     People::getPeople()->curY = Game::getRows() - 1;
 }
