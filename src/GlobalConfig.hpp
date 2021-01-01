@@ -16,16 +16,13 @@ class GlobalConfig{
     int currentPeopleX, currentPeopleY;
     queue<Pixel*> drawingQueue;
     char lastSignal;
-    vector< vector<char> > drawing_matrix;
+    vector< vector<char> > drawing_matrix();
 
     void resetMatrix();
     void initNewData(int setScore);
     static GlobalConfig* getInstance();
-<<<<<<< HEAD
     
-=======
     ~GlobalConfig();
->>>>>>> main
 };
 
 

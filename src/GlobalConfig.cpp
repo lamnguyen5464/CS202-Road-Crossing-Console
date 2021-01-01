@@ -17,8 +17,6 @@ GlobalConfig *GlobalConfig::getInstance()
     return instance;
 }
 
-<<<<<<< HEAD
-=======
 void GlobalConfig::resetMatrix()
 {
     drawing_matrix.clear();
@@ -40,4 +38,3 @@ void GlobalConfig::initNewData(int setScore)
     People::getPeople()->curX = Game::getColumns() / 2;
     People::getPeople()->curY = Game::getRows() - 1;
 }
->>>>>>> main

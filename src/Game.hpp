@@ -1,11 +1,12 @@
 #include <thread>
 #include "Object.hpp"
+#include "tchar.h"
 #include <vector>
+#include "GlobalConfig.hpp"
 
 #ifndef Game_hpp
 #define Game_hpp
 
-<<<<<<< HEAD
 #define ColorCode_Black			0
 #define ColorCode_DarkBlue		1
 #define ColorCode_DarkGreen		2
@@ -25,15 +26,11 @@
 
 #define default_ColorCode		7
 class Game{
-=======
-
-class Game
-{
->>>>>>> main
 private:
 public:
     static const int SCREEN_HEIGHT = 700;
     static const int SCREEN_WIDTH = 1000;
+    static const bool soundOn = true; 
 
     static void clearConsole();
     static void goTo(int posX, int posY);
@@ -47,33 +44,27 @@ public:
     static void loadGame();
     static void onNextLevel();
 
-<<<<<<< HEAD
     //screens:
     void drawTitle(int height, int width);
     void drawRectangle(int, int, int, int);
     void removeRectangle(int, int, int, int);
 
-=======
     // screens:
->>>>>>> main
     static void showMenu();
     static void showGroundPlay();
 
     //in other thread
     static void drawPixelInQueue();
     static void eventKeyBoardListener();
-<<<<<<< HEAD
 
     
     //
     void fontsize(int, int);
     void textColor(int x);
     //
-    //void soundSetting(bool &soundOn) 
+    //void soundSetting(bool &soundOn); 
+    //void moveSound();
     //
-=======
-    static void notiListener();
->>>>>>> main
 };
 
 #endif

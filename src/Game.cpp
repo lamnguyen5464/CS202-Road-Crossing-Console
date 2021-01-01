@@ -139,8 +139,13 @@ void testCar()
         return;
 }
 
+void moveSound(){
+    PlaySound(_T("sound/move.wav"), NULL, SND_FILENAME);
+}
+
 void testPeople()
 {
+    thread sound;
     People::getPeople()->draw();
     while (1)
     {
@@ -153,27 +158,30 @@ void testPeople()
         if (Game().controlDirectionKey(People::getPeople()->curX, People::getPeople()->curY, GlobalConfig::getInstance()->lastSignal))
         {
             People::getPeople()->erase(oldX, oldY);
+            
             People::getPeople()->draw();
+            sound.detach();
+            sound = thread(moveSound);
 
             GlobalConfig::getInstance()->lastSignal = ' ';
         }
     }
 }
 
-void Game::notiListener()
-{
-    // while (1)
-    // {
-    //     if (Game().haveStopSignal())
-    //     {
-    //         Game().clearConsole();
-    //         Game().goTo(1, 1);
-    //         cout << "you lose!!!" << endl;
-    //         cout << "Press Q to exit";
-    //         return;
-    //     }
-    // }
-}
+// void Game::notiListener()
+// {
+//     // while (1)
+//     // {
+//     //     if (Game().haveStopSignal())
+//     //     {
+//     //         Game().clearConsole();
+//     //         Game().goTo(1, 1);
+//     //         cout << "you lose!!!" << endl;
+//     //         cout << "Press Q to exit";
+//     //         return;
+//     //     }
+//     // }
+// }
 
 void Game::onNextLevel(){
     int currentColumn = Game().getColumns() - 5;
@@ -202,6 +210,7 @@ void Game::showGroundPlay()
  
     thread testObj(testRun);
     // thread testOther(testCar);
+
     thread people(testPeople);
 
    people.join();
@@ -332,15 +341,9 @@ void Game::showMenu()
     {
         Game().clearConsole();
         //instruction
-<<<<<<< HEAD
         Game().goTo(1, 30);
         cout<<"Type \'W\' for up"<<endl<<" Type \'S\' for down";
         Game().drawRectangle(1, 29, 18,32);
-=======
-        Game().goTo(1, 3);
-        cout << "Type \'W\' for up" << endl
-             << " Type \'S\' for down";
->>>>>>> main
 
         //content
         Game().goTo((Game().getColumns() - title.length()) / 2, 18); //allign center
@@ -355,7 +358,6 @@ void Game::showMenu()
     Game().drawRectangle(getColumns()/2-10, getRows()/4+8, getColumns()/2+10,getRows()/4+15);
 
         for (int i = 0; i < 3; i++)
-<<<<<<< HEAD
         {   
             Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i*2);
             Game().textColor(ColorCode_DarkGreen);
@@ -365,16 +367,6 @@ void Game::showMenu()
                 Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 20 + i*2);
                 Game().textColor(ColorCode_Grey);
                 cout<<">>>";
-=======
-        {
-            Game().goTo((Game().getColumns() - options[i].length()) / 2, 10 + i * 2);
-            cout << options[i];
-
-            if (choice == i)
-            {
-                Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 10 + i * 2);
-                cout << ">>>";
->>>>>>> main
             }
         }
 
@@ -432,3 +424,40 @@ void Game::loadGame()
         gameData.close();
     }
 }
+
+
+
+//  void Game::soundSetting(bool &soundOn){
+
+	// handle->textcolor(ColorCode_Cyan);
+	// drawRectangle(handle, col, row, col + 6, row);
+	// handle->textcolor(ColorCode_White);
+
+	// char c;
+	// do {
+	// 	handle->gotoXY(col, row);
+	// 	if (soundOn) {
+	// 		cout << char(174);
+	// 		handle->textcolor(ColorCode_Green);
+	// 		cout << " O N ";
+	// 		handle->textcolor(ColorCode_White);
+	// 		cout << char(175);
+	// 	}
+	// 	else {
+	// 		cout << char(174);
+	// 		handle->textcolor(ColorCode_Red);
+	// 		cout << " OFF ";
+	// 		handle->textcolor(ColorCode_White);
+	// 		cout << char(175);
+	// 	}
+
+	// 	c = _getch();
+	// 	if (c == -32) {
+	// 		c = _getch();
+	// 		if (c == key_RightArrow || c == key_LeftArrow)
+	// 			soundOn = !soundOn;
+	// 	}
+
+	// } while (c != key_Enter);
+	
+//  }
