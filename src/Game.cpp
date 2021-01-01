@@ -81,6 +81,16 @@ void Game::drawPixelInQueue()
         {
             Pixel *p = GlobalConfig::getInstance()->drawingQueue.front();
             GlobalConfig::getInstance()->drawingQueue.pop();
+
+            char tmp = GlobalConfig::getInstance()->drawing_matrix[p->x][p->y];
+
+            if (p->pixel != ' ' && tmp != ' ')
+            {
+                GlobalConfig::getInstance()->lastSignal = 'Q';
+            }
+
+            GlobalConfig::getInstance()->drawing_matrix[p->x][p->y] = p->pixel;
+
             Game().goTo(p->x, p->y);
             cout << p->pixel;
         }
@@ -99,13 +109,6 @@ void Game::addPixelToQueue(int x, int y, char pixel)
         return;
     }
 
-    char tmp = GlobalConfig::getInstance()->drawing_matrix[x][y];
-
-    if (pixel != ' ' && tmp != ' ')
-    {
-        GlobalConfig::getInstance()->lastSignal = 'Q';
-    }
-    GlobalConfig::getInstance()->drawing_matrix[x][y] = pixel;
     GlobalConfig::getInstance()->drawingQueue.push(p);
 }
 
@@ -163,7 +166,7 @@ void Game::notiListener()
     // {
     //     if (Game().haveStopSignal())
     //     {
-    //         // Game().clearConsole();
+    //         Game().clearConsole();
     //         Game().goTo(1, 1);
     //         cout << "you lose!!!" << endl;
     //         cout << "Press Q to exit";
@@ -172,10 +175,23 @@ void Game::notiListener()
     // }
 }
 
+void Game::onNextLevel(){
+    int currentColumn = Game().getColumns() - 5;
+    int score = GlobalConfig::getInstance()->currentScore;
+
+    string scoreStr = to_string(score);
+
+    for(int i = 0; i < scoreStr.length(); i++){
+        Game().addPixelToQueue(currentColumn + i, 2, ' ');
+        Game().addPixelToQueue(currentColumn + i, 2, scoreStr[i]);
+    }
+}
+
 void Game::showGroundPlay()
 {
     GlobalConfig::getInstance()->resetMatrix();
     Game().clearConsole();
+    Game().onNextLevel();
     Game().goTo(1, 40);
 
     cout << "@ Press Q to quit" << endl;
@@ -188,9 +204,12 @@ void Game::showGroundPlay()
     // thread testOther(testCar);
     thread people(testPeople);
 
-    people.join();
+   people.join();
+     Game().goTo(1,1);
+    cout<<"herere";
     testObj.join();
     // testOther.join();
+    
 
     draw.join();
     noti.join();
@@ -250,7 +269,7 @@ void Game::showMenu()
             switch (choice)
             {
             case 0:
-                GlobalConfig::getInstance()->initNewData();
+                GlobalConfig::getInstance()->initNewData(0);
                 Game().showGroundPlay();
                 break;
             case 1:
@@ -281,7 +300,7 @@ void Game::loadGame()
     if (!gameData.is_open())
     {
         //set init config
-        GlobalConfig::getInstance()->initNewData();
+        GlobalConfig::getInstance()->initNewData(0);
     }
     else
     {
