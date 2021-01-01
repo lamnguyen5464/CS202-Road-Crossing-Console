@@ -201,14 +201,14 @@ void Game::showGroundPlay()
     thread noti(Game().notiListener);
  
     thread testObj(testRun);
-    // thread testOther(testCar);
+    thread testOther(testCar);
     thread people(testPeople);
 
    people.join();
      Game().goTo(1,1);
     cout<<"herere";
     testObj.join();
-    // testOther.join();
+    testOther.join();
     
 
     draw.join();
