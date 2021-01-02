@@ -269,6 +269,7 @@ void Game::showMenu()
             switch (choice)
             {
             case 0:
+                GlobalConfig::getInstance()->first = true;
                 GlobalConfig::getInstance()->initNewData(0);
                 Game().showGroundPlay();
                 break;

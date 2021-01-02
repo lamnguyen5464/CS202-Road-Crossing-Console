@@ -35,6 +35,12 @@ void GlobalConfig::resetMatrix()
 void GlobalConfig::initNewData(int setScore)
 {
     currentScore = setScore;
+    if (setScore == 0) {
+        GlobalConfig::getInstance()->d1 = 0;
+        GlobalConfig::getInstance()->d2 = 0;
+        GlobalConfig::getInstance()->d3 = 0;
+        GlobalConfig::getInstance()->d4 = 0;
+    }
     if (first) first = false;
     else updated = false;
     People::getPeople()->curX = Game::getColumns() / 2;
