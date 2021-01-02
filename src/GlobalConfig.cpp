@@ -20,6 +20,9 @@ GlobalConfig *GlobalConfig::getInstance()
 void GlobalConfig::resetMatrix()
 {
     drawing_matrix.clear();
+    while (drawingQueue.size()){
+        drawingQueue.pop();
+    }
     vector<char> tmp;
     for (int i = 0; i <= Game().getColumns(); i++)
     {
@@ -35,6 +38,7 @@ void GlobalConfig::resetMatrix()
 void GlobalConfig::initNewData(int setScore)
 {
     currentScore = setScore;
+    updated = false;
     People::getPeople()->curX = Game::getColumns() / 2;
     People::getPeople()->curY = Game::getRows() - 1;
 }

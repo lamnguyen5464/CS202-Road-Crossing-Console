@@ -2,7 +2,7 @@
 
 People::People()
 {
-    pixel = 'E';
+    pixel = '@';
     body.push_back(Coord(-1, 0));
     body.push_back(Coord(-1, -1));
     body.push_back(Coord(0, 0));
@@ -12,7 +12,6 @@ People::People()
 void People::draw()
 {
     if (curY <= 2){
-        GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 1);
         Game().onNextLevel();
         return;
     }

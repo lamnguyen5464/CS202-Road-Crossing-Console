@@ -34,11 +34,6 @@ Object::Object(int x, int y, int z, int t) {
 void Object::draw(int x, int y){
     for(int i = 0; i < body.size(); i++){
         Game().addPixelToQueue(x + body[i].x, y + body[i].y, pixel);
-        // for (int i = 0; i < People::getPeople()->body.size(); ++i)
-        // {
-        //     if (p->pixel != ' ' && p->x == People::getPeople()->curX + People::getPeople()->body[i].x && p->y == People::getPeople()->curY + People::getPeople()->body[i].y)
-        //         GlobalConfig::getInstance()->lastSignal = 'Q';
-        // }
     }
 }
 
@@ -55,6 +50,7 @@ void Object::drawAll()
     int i = 0;
     while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
     {
+        if (Game().haveStopSignal()) return;
         draw(curX + i * delta, curY);
         ++i;
     }
@@ -65,6 +61,7 @@ void Object::eraseAll()
     int i = 0;
     while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
     {
+        if (Game().haveStopSignal()) return;
         erase(curX + i * delta, curY);
         ++i;
     }
@@ -73,16 +70,31 @@ void Object::eraseAll()
 void Object::updateCursor() 
 {
     curX += move;
-    if (move == 1 && curX == 21) curX = 1;
-    else if (move == -1 && curX == Game::getColumns() - 23) curX = Game::getColumns() - 3;
+    if (move == 1 && curX == 1 + delta) curX = 1;
+    else if (move == -1 && curX == Game::getColumns() - 3 + delta) curX = Game::getColumns() - 3;
+}
+
+void Object::updateDelta() {
+    if (GlobalConfig::getInstance()->updated == false && (delta > 20 || delta < -20)) {
+        GlobalConfig::getInstance()->updated = true;
+        eraseAll();
+        delta /= 2;
+        if (move > 0) {
+            curX = 1;
+        }
+        else { 
+            curX = Game::getColumns() - 3;
+        }
+    }
 }
 
 void Object::run()
 {
     while (1) {
         if (Game().haveStopSignal()) return;
+        updateDelta();
         drawAll();
-        Sleep(1000);
+        Sleep(250);
         eraseAll();
         updateCursor();
     }
@@ -98,7 +110,7 @@ void Truck::run()
     Object::run();
 }
 
-Car::Car() : Object(1, 20, 1, 20) {}
-Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, -20) {}
+Car::Car() : Object(1, 20, 1, Game::getColumns() - 1) {}
+Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, (Game::getColumns() - 1) * (-1)) {}
 
 

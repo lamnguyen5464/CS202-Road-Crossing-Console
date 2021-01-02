@@ -28,6 +28,7 @@ public:
     // screens:
     static void showMenu();
     static void showGroundPlay();
+    static void showReplayMenu();
 
     //in other thread
     static void drawPixelInQueue();
