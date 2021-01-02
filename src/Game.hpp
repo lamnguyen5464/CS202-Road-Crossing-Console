@@ -44,15 +44,12 @@ public:
     static void loadGame();
     static void onNextLevel();
 
-<<<<<<< HEAD
     //screens:
     void drawTitle(int height, int width);
     void drawRectangle(int, int, int, int);
     void removeRectangle(int, int, int, int);
 
-=======
     static void showScore();
->>>>>>> main
     // screens:
     static void showMenu();
     static void showGroundPlay();

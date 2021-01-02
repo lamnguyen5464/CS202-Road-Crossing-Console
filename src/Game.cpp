@@ -159,7 +159,6 @@ void testPeople()
     }
 }
 
-<<<<<<< HEAD
 // void Game::notiListener()
 // {
 //     // while (1)
@@ -176,9 +175,8 @@ void testPeople()
 // }
 
 void Game::onNextLevel(){
-=======
+    
 void Game::showScore(){
->>>>>>> main
     int currentColumn = Game().getColumns() - 5;
     int score = GlobalConfig::getInstance()->currentScore;
 
@@ -211,12 +209,9 @@ void Game::showGroundPlay()
     thread draw(Game().drawPixelInQueue);
 
     thread testObj(testRun);
-<<<<<<< HEAD
     // thread testOther(testCar);
 
-=======
     thread testOther(testCar);
->>>>>>> main
     thread people(testPeople);
 
     people.join();
@@ -237,7 +232,6 @@ void Game::showGroundPlay()
     GlobalConfig::getInstance()->lastSignal = ' ';
 }
 
-<<<<<<< HEAD
 void Game::fontsize(int x, int y){
     PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();  
   lpConsoleCurrentFontEx->cbSize = sizeof(CONSOLE_FONT_INFOEX);  
@@ -331,7 +325,6 @@ void Game::removeRectangle(int topLeftX, int topLeftY, int bottomRightX, int bot
 	for (i = topLeftX + 1; i < bottomRightX; ++i)
 		cout << " ";
 	cout << " ";
-=======
 void Game::showReplayMenu(){
     Game().clearConsole();
     Game().goTo(1, 1);
@@ -340,7 +333,6 @@ void Game::showReplayMenu(){
     cout<<"Current Score: "<<GlobalConfig::getInstance()->currentScore<<endl;
     cout<<"Press Q to back to menu"<<endl;
 
->>>>>>> main
 }
 
 void Game::showMenu()
@@ -446,25 +438,25 @@ void Game::loadGame()
 
 //  void Game::soundSetting(bool &soundOn){
 
-	// handle->textcolor(ColorCode_Cyan);
+	// textcolor(ColorCode_Cyan);
 	// drawRectangle(handle, col, row, col + 6, row);
-	// handle->textcolor(ColorCode_White);
+	// textcolor(ColorCode_White);
 
 	// char c;
 	// do {
-	// 	handle->gotoXY(col, row);
+	// 	gotoXY(col, row);
 	// 	if (soundOn) {
 	// 		cout << char(174);
-	// 		handle->textcolor(ColorCode_Green);
+	// 		textcolor(ColorCode_Green);
 	// 		cout << " O N ";
-	// 		handle->textcolor(ColorCode_White);
+	// 		textcolor(ColorCode_White);
 	// 		cout << char(175);
 	// 	}
 	// 	else {
 	// 		cout << char(174);
-	// 		handle->textcolor(ColorCode_Red);
+	// 		textcolor(ColorCode_Red);
 	// 		cout << " OFF ";
-	// 		handle->textcolor(ColorCode_White);
+	// 		textcolor(ColorCode_White);
 	// 		cout << char(175);
 	// 	}
 
