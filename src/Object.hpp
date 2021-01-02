@@ -22,7 +22,8 @@ public:
     void eraseAll();
     void updateCursor();
     void updateDelta();
-    void setDelta(int d);
+    virtual int type() = 0;
+    void setDelta(int n);
 
     virtual void run();
 };
@@ -31,7 +32,7 @@ class Car : public Object
 public: 
     Car();
     void run();
-
+    int type();
 };
 
 class Truck : public Object 
@@ -39,6 +40,7 @@ class Truck : public Object
 public:
     Truck();
     void run();
+    int type();
 };
 
 

@@ -14,8 +14,9 @@ class GlobalConfig{
 
     int currentScore = 0;
     bool first = true;
-    int currentPeopleX, currentPeopleY;
     bool updated = true;
+    int d1 = 0, d2 = 0, d3 = 0, d4 = 0;
+    int currentPeopleX, currentPeopleY;
     queue<Pixel*> drawingQueue;
     char lastSignal;
     vector< vector<char> > drawing_matrix;

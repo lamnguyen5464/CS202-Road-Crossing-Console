@@ -290,6 +290,7 @@ void Game::saveGame()
     gameData.open("game_data.txt");
     gameData << GlobalConfig::getInstance()->currentScore << endl;
     gameData << People::getPeople()->curX << " " << People::getPeople()->curY << endl;
+    gameData << GlobalConfig::getInstance()->d1 << " " << GlobalConfig::getInstance()->d2 << " " << GlobalConfig::getInstance()->d3 << " " << GlobalConfig::getInstance()->d4 << endl;
     gameData.close();
 }
 
@@ -306,7 +307,7 @@ void Game::loadGame()
     {
         gameData >> GlobalConfig::getInstance()->currentScore;
         gameData >> People::getPeople()->curX >> People::getPeople()->curY;
-        //add more data if need
+        gameData >> GlobalConfig::getInstance()->d1 >> GlobalConfig::getInstance()->d2 >> GlobalConfig::getInstance()->d3 >> GlobalConfig::getInstance()->d4;
         gameData.close();
     }
 }

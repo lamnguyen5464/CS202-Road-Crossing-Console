@@ -83,7 +83,29 @@ void Object::updateDelta() {
         else { 
             curX = Game::getColumns() - 3;
         }
+        switch (type())
+        {
+        case 1:
+
+            break;
+        case 2:
+
+            break;
+        case 3:
+            GlobalConfig::getInstance()->d3 = delta;
+            break;
+        case 4:
+            GlobalConfig::getInstance()->d4 = delta;
+            break;
+        default:
+            break;
+        }
     }
+}
+
+void Object::setDelta(int n)
+{
+    delta = n;
 }
 
 void Object::run()
@@ -92,7 +114,7 @@ void Object::run()
         if (Game().haveStopSignal()) return;
         updateDelta();
         drawAll();
-        Sleep(150);
+        Sleep(250);
         eraseAll();
         updateCursor();
     }
@@ -108,7 +130,15 @@ void Truck::run()
     Object::run();
 }
 
-Car::Car() : Object(1, 20, 1, Game::getColumns() - 1) {}
-Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, (Game::getColumns() - 1) * (-1)) {}
+int Car::type() { return 3; }
+int Truck::type() { return 4; }
+
+Car::Car() : Object(1, 20, 1, Game::getColumns() - 1) {
+    if (GlobalConfig::getInstance()->d3 != 0) setDelta(GlobalConfig::getInstance()->d3);
+}
+
+Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, (Game::getColumns() - 1) * (-1)) {
+    if (GlobalConfig::getInstance()->d4 != 0) setDelta(GlobalConfig::getInstance()->d4);
+}
 
 
