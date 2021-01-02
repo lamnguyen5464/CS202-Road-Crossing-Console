@@ -25,6 +25,7 @@ public:
     static void loadGame();
     static void onNextLevel();
 
+    static void showScore();
     // screens:
     static void showMenu();
     static void showGroundPlay();

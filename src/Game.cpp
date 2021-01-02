@@ -151,9 +151,7 @@ void testPeople()
     }
 }
 
-void Game::onNextLevel()
-{
-    GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 10);
+void Game::showScore(){
     int currentColumn = Game().getColumns() - 5;
     int score = GlobalConfig::getInstance()->currentScore;
 
@@ -166,11 +164,18 @@ void Game::onNextLevel()
     }
 }
 
+void Game::onNextLevel()
+{
+    GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 10);
+    Game().showScore();
+
+}
+
 void Game::showGroundPlay()
 {
     GlobalConfig::getInstance()->resetMatrix();
     Game().clearConsole();
-    Game().onNextLevel();
+    Game().showScore();
     Game().goTo(1, 40);
 
     cout << "@ Press Q to quit and save" << endl;
