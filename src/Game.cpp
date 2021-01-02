@@ -204,9 +204,10 @@ void Game::showGroundPlay()
     // thread testOther(testCar);
     thread people(testPeople);
 
-   people.join();
-     Game().goTo(1,1);
+    people.join();
+    Game().goTo(1,1);
     cout<<"herere";
+    Game().textColor(ColorCode_DarkCyan);
     testObj.join();
     // testOther.join();
     
@@ -216,7 +217,7 @@ void Game::showGroundPlay()
 
     Game().goTo(1,1);
     cout<<"You lose!"<<"Press Q to exit"<<endl;
-
+    Game().textColor(ColorCode_Red);
     keyboardListener.join();
 
     GlobalConfig::getInstance()->lastSignal = ' ';
