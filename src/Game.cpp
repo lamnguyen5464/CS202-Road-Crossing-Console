@@ -332,15 +332,12 @@ void Game::showMenu()
     {
         Game().clearConsole();
         //instruction
-<<<<<<< HEAD
         Game().goTo(1, 30);
         cout<<"Type \'W\' for up"<<endl<<" Type \'S\' for down";
         Game().drawRectangle(1, 29, 18,32);
-=======
         Game().goTo(1, 3);
         cout << "Type \'W\' for up" << endl
              << " Type \'S\' for down";
->>>>>>> main
 
         //content
         Game().goTo((Game().getColumns() - title.length()) / 2, 18); //allign center
@@ -355,7 +352,6 @@ void Game::showMenu()
     Game().drawRectangle(getColumns()/2-10, getRows()/4+8, getColumns()/2+10,getRows()/4+15);
 
         for (int i = 0; i < 3; i++)
-<<<<<<< HEAD
         {   
             Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i*2);
             Game().textColor(ColorCode_DarkGreen);
@@ -365,7 +361,6 @@ void Game::showMenu()
                 Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 20 + i*2);
                 Game().textColor(ColorCode_Grey);
                 cout<<">>>";
-=======
         {
             Game().goTo((Game().getColumns() - options[i].length()) / 2, 10 + i * 2);
             cout << options[i];
@@ -374,7 +369,6 @@ void Game::showMenu()
             {
                 Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 10 + i * 2);
                 cout << ">>>";
->>>>>>> main
             }
         }
 

@@ -21,11 +21,8 @@ class GlobalConfig{
     void resetMatrix();
     void initNewData(int setScore);
     static GlobalConfig* getInstance();
-<<<<<<< HEAD
     
-=======
     ~GlobalConfig();
->>>>>>> main
 };
 
 
