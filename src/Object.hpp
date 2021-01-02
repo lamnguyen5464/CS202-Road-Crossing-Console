@@ -22,6 +22,7 @@ public:
     void eraseAll();
     void updateCursor();
     void updateDelta();
+    void setDelta(int d);
 
     virtual void run();
 };

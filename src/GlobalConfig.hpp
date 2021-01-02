@@ -13,6 +13,7 @@ class GlobalConfig{
     public:
 
     int currentScore = 0;
+    bool first = true;
     int currentPeopleX, currentPeopleY;
     bool updated = true;
     queue<Pixel*> drawingQueue;

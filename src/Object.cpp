@@ -73,7 +73,7 @@ void Object::updateCursor()
 }
 
 void Object::updateDelta() {
-    if (GlobalConfig::getInstance()->updated == false && (delta > 20 || delta < -20)) {
+    if (GlobalConfig::getInstance()->first == false && GlobalConfig::getInstance()->updated == false && (delta > 20 || delta < -20)) {
         GlobalConfig::getInstance()->updated = true;
         eraseAll();
         delta /= 2;
@@ -92,7 +92,7 @@ void Object::run()
         if (Game().haveStopSignal()) return;
         updateDelta();
         drawAll();
-        Sleep(250);
+        Sleep(150);
         eraseAll();
         updateCursor();
     }
