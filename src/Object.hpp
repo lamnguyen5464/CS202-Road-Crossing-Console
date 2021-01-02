@@ -21,6 +21,7 @@ public:
     void drawAll();
     void eraseAll();
     void updateCursor();
+    void updateDelta();
 
     virtual void run();
 };
