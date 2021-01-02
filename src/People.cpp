@@ -11,6 +11,12 @@ People::People()
 
 void People::draw()
 {
+    if (curY <= 2){
+        GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 1);
+        Game().onNextLevel();
+        return;
+    }
+
     for (int i = 0; i < body.size(); ++i)
     {
         Game::addPixelToQueue(curX + body[i].x, curY + body[i].y, pixel);
