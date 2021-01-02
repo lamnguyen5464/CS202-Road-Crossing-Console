@@ -70,15 +70,18 @@ bool Game::controlDirectionKey(int &curX, int &curY, char signal)
 
 bool Game::haveStopSignal()
 {
-    return GlobalConfig::getInstance()->lastSignal == 'Q';
+    char sign = GlobalConfig::getInstance()->lastSignal;
+    return (sign == 'L' || sign == 'Q');
 }
 
 void Game::drawPixelInQueue()
 {
-    while (1)
+    while (!Game().haveStopSignal())
     {
         while (GlobalConfig::getInstance()->drawingQueue.size() != 0)
         {
+            if (Game().haveStopSignal())
+                return;
             Pixel *p = GlobalConfig::getInstance()->drawingQueue.front();
             GlobalConfig::getInstance()->drawingQueue.pop();
 
@@ -86,7 +89,7 @@ void Game::drawPixelInQueue()
 
             if (p->pixel != ' ' && tmp != ' ')
             {
-                GlobalConfig::getInstance()->lastSignal = 'Q';
+                GlobalConfig::getInstance()->lastSignal = 'L';
             }
 
             GlobalConfig::getInstance()->drawing_matrix[p->x][p->y] = p->pixel;
@@ -94,8 +97,6 @@ void Game::drawPixelInQueue()
             Game().goTo(p->x, p->y);
             cout << p->pixel;
         }
-        if (Game().haveStopSignal())
-            return;
     }
 }
 
@@ -118,8 +119,7 @@ void Game::eventKeyBoardListener()
     {
         char t = toupper(getch());
         GlobalConfig::getInstance()->lastSignal = t;
-        if (Game().haveStopSignal())
-            return;
+        if (t == 'Q') return;
     }
 }
 
@@ -127,28 +127,19 @@ void testRun()
 {
     Truck obj;
     obj.run();
-    if (Game().haveStopSignal())
-        return;
 }
 
 void testCar()
 {
     Car obj;
     obj.run();
-    if (Game().haveStopSignal())
-        return;
 }
 
 void testPeople()
 {
     People::getPeople()->draw();
-    while (1)
+    while (!Game().haveStopSignal())
     {
-        if (Game().haveStopSignal())
-        {
-            Game().saveGame();
-            return;
-        }
         int oldX = People::getPeople()->curX, oldY = People::getPeople()->curY;
         if (Game().controlDirectionKey(People::getPeople()->curX, People::getPeople()->curY, GlobalConfig::getInstance()->lastSignal))
         {
@@ -160,28 +151,16 @@ void testPeople()
     }
 }
 
-void Game::notiListener()
+void Game::onNextLevel()
 {
-    // while (1)
-    // {
-    //     if (Game().haveStopSignal())
-    //     {
-    //         Game().clearConsole();
-    //         Game().goTo(1, 1);
-    //         cout << "you lose!!!" << endl;
-    //         cout << "Press Q to exit";
-    //         return;
-    //     }
-    // }
-}
-
-void Game::onNextLevel(){
+    GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 10);
     int currentColumn = Game().getColumns() - 5;
     int score = GlobalConfig::getInstance()->currentScore;
 
     string scoreStr = to_string(score);
 
-    for(int i = 0; i < scoreStr.length(); i++){
+    for (int i = 0; i < scoreStr.length(); i++)
+    {
         Game().addPixelToQueue(currentColumn + i, 2, ' ');
         Game().addPixelToQueue(currentColumn + i, 2, scoreStr[i]);
     }
@@ -194,32 +173,41 @@ void Game::showGroundPlay()
     Game().onNextLevel();
     Game().goTo(1, 40);
 
-    cout << "@ Press Q to quit" << endl;
+    cout << "@ Press Q to quit and save" << endl;
 
     thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
-    thread noti(Game().notiListener);
- 
+
     thread testObj(testRun);
     thread testOther(testCar);
     thread people(testPeople);
 
-   people.join();
-     Game().goTo(1,1);
-    cout<<"herere";
-    testObj.join();
-    testOther.join();
-    
+    people.join();
 
     draw.join();
-    noti.join();
 
-    Game().goTo(1,1);
-    cout<<"You lose!"<<"Press Q to exit"<<endl;
+    if (GlobalConfig::getInstance()->lastSignal == 'L'){
+        showReplayMenu();
+        GlobalConfig::getInstance()->initNewData(0);
+    }
+    Game().saveGame();
+
+    testObj.join();
+    testOther.join();
 
     keyboardListener.join();
 
     GlobalConfig::getInstance()->lastSignal = ' ';
+}
+
+void Game::showReplayMenu(){
+    Game().clearConsole();
+    Game().goTo(1, 1);
+
+    cout<<"you lose!"<<endl;
+    cout<<"Current Score: "<<GlobalConfig::getInstance()->currentScore<<endl;
+    cout<<"Press Q to back to menu"<<endl;
+
 }
 
 void Game::showMenu()

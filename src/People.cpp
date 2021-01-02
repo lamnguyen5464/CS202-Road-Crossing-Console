@@ -12,7 +12,6 @@ People::People()
 void People::draw()
 {
     if (curY <= 2){
-        GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 10);
         Game().onNextLevel();
         return;
     }
