@@ -137,7 +137,7 @@ void testCar()
 }
 
 void moveSound(){
-    PlaySound(_T("sound/move.wav"), NULL, SND_FILENAME);
+    PlaySoundA(("sound/move.wav"), NULL, SND_SYNC);
 }
 
 void testPeople()
@@ -161,7 +161,6 @@ void testPeople()
     }
 }
 
-<<<<<<< HEAD
 // void Game::notiListener()
 // {
 //     // while (1)
@@ -177,13 +176,11 @@ void testPeople()
 //     // }
 // }
 
-void Game::onNextLevel(){
+// void Game::onNextLevel(){
     
-void Game::showScore(){
-=======
+// void Game::showScore(){
 void Game::showScore()
 {
->>>>>>> main
     int currentColumn = Game().getColumns() - 5;
     int score = GlobalConfig::getInstance()->currentScore;
 
@@ -238,15 +235,6 @@ void Game::showGroundPlay()
     GlobalConfig::getInstance()->lastSignal = ' ';
 }
 
-<<<<<<< HEAD
-void Game::fontsize(int x, int y){
-    PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();  
-  lpConsoleCurrentFontEx->cbSize = sizeof(CONSOLE_FONT_INFOEX);  
-  GetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, lpConsoleCurrentFontEx);  
-  lpConsoleCurrentFontEx->dwFontSize.X = x;  
-  lpConsoleCurrentFontEx->dwFontSize.Y = y;  
-  SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, lpConsoleCurrentFontEx); 
-=======
 void Game::fontsize(int x, int y)
 {
     PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();
@@ -262,7 +250,6 @@ void Game::textColor(int x)
     HANDLE cout_handle = GetStdHandle(STD_OUTPUT_HANDLE);
     cout_handle = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(cout_handle, x);
->>>>>>> main
 }
 
 void Game::drawTitle(int height, int width)
@@ -484,32 +471,6 @@ void Game::removeRectangle(int topLeftX, int topLeftY, int bottomRightX, int bot
     int i;
 
     Game().goTo(topLeftX, topLeftY);
-<<<<<<< HEAD
-	cout << " ";
-	for (i = topLeftX + 1; i < bottomRightX; ++i)
-		cout << " ";
-	cout << " ";
-
-	for (i = topLeftY + 1; i < bottomRightY; ++i) {
-		Game().goTo(topLeftX, i);
-		cout << " ";
-		Game().goTo(bottomRightX, i);
-		cout << " ";
-	}
-
-	Game().goTo(topLeftX, bottomRightY);
-	cout << " ";
-	for (i = topLeftX + 1; i < bottomRightX; ++i)
-		cout << " ";
-	cout << " ";
-void Game::showReplayMenu(){
-    Game().clearConsole();
-    Game().goTo(1, 1);
-
-    cout<<"you lose!"<<endl;
-    cout<<"Current Score: "<<GlobalConfig::getInstance()->currentScore<<endl;
-    cout<<"Press Q to back to menu"<<endl;
-=======
     cout << " ";
     for (i = topLeftX + 1; i < bottomRightX; ++i)
         cout << " ";
@@ -561,7 +522,6 @@ void clearAndShowMenu() {
     Game().textColor(default_ColorCode);
 
     Game().drawRectangle(Game().getColumns() / 2 - 10, Game().getRows() / 4 + 8, Game().getColumns() / 2 + 10, Game().getRows() / 4 + 15);
->>>>>>> main
 
 }
 
@@ -579,43 +539,11 @@ void Game::showMenu()
 
     while (1)
     {
-<<<<<<< HEAD
-        Game().clearConsole();
-        //instruction
-        Game().goTo(1, 30);
-        cout<<"Type \'W\' for up"<<endl<<" Type \'S\' for down";
-        Game().drawRectangle(1, 29, 18,32);
-
-        //content
-        Game().goTo((Game().getColumns() - title.length()) / 2, 18); //allign center
-        Game().textColor(ColorCode_Yellow);
-        cout << title;
-        Game().textColor(ColorCode_DarkBlue);
-        Game().goTo(Game().getColumns()/2, 2);
-
-        Game().drawTitle(7, 82);
-        Game().textColor(default_ColorCode);
-
-    Game().drawRectangle(getColumns()/2-10, getRows()/4+8, getColumns()/2+10,getRows()/4+15);
-
-        for (int i = 0; i < 3; i++)
-        {   
-            Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i*2);
-            Game().textColor(ColorCode_DarkGreen);
-            cout<<options[i];
-
-            if (choice == i){
-                Game().goTo((Game().getColumns() - options[i].length()) / 2 - 4, 20 + i*2);
-                Game().textColor(ColorCode_Grey);
-                cout<<">>>";
-            }
-=======
         for (int i = 0; i < 3; i++)
         {
             Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i * 2);
             Game().textColor( choice == i ?  ColorCode_DarkGreen : ColorCode_Grey);
             cout << options[i];
->>>>>>> main
         }
 
         char getKey = toupper(getch());
