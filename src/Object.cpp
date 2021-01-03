@@ -9,21 +9,49 @@ Object::Object(int x, int y, int z, int t) {
     pixel = '\xDB';
     switch (curY)
     {
-    case 20:
+    case 25:
+        carLight.setCord(0, curY - 3);
         body.push_back(Coord(0, 0));
         body.push_back(Coord(1, 0));
+        body.push_back(Coord(2, 0));
         body.push_back(Coord(0, 1));
         body.push_back(Coord(1, 1));
         body.push_back(Coord(2, 1));
+        body.push_back(Coord(3, 1));
+        body.push_back(Coord(4, 1));
         body.push_back(Coord(-1, 1));
+        body.push_back(Coord(-2, 1));
         break;
-    case 30:
+    case 35:
+        truckLight.setCord(Game().getColumns() - 1, curY - 5);
         body.push_back(Coord(0, 0));
-        body.push_back(Coord(1, 0));
         body.push_back(Coord(0, 1));
+        body.push_back(Coord(1, 0));
         body.push_back(Coord(1, 1));
         body.push_back(Coord(2, 1));
         body.push_back(Coord(-1, 1));
+        body.push_back(Coord(-1, 0));
+        break;
+    case 15:
+        body.push_back(Coord(0, 3));
+        body.push_back(Coord(1, 2));
+        body.push_back(Coord(1, 3));
+        body.push_back(Coord(2, 1));
+        body.push_back(Coord(2, 2));
+        body.push_back(Coord(2, 3));
+        body.push_back(Coord(3, 1));
+        body.push_back(Coord(3, 2));
+        body.push_back(Coord(3, 3));
+        body.push_back(Coord(4, 0));
+        body.push_back(Coord(5, 0));
+        break;
+    case 10:
+        body.push_back(Coord(1, 1));
+        body.push_back(Coord(2, 1));
+        body.push_back(Coord(3, 1));
+        body.push_back(Coord(0, 0));
+        body.push_back(Coord(-1, 0));
+        body.push_back(Coord(-2, 0));
         break;
     default:
         break;
@@ -79,6 +107,8 @@ void Object::updateCursor()
 
 void Object::run()
 {
+    carLight.draw();
+    truckLight.draw();
     while (1) {
         if (Game().haveStopSignal()) return;
         drawAll();
@@ -88,17 +118,16 @@ void Object::run()
     }
 }
 
-void Car::run()
+void Object::flipTruckLight()
 {
-    Object::run();
+    truckLight.lightSwitch();
 }
 
-void Truck::run()
+void Object::flipCarLight()
 {
-    Object::run();
+    carLight.lightSwitch();
 }
 
-Car::Car() : Object(1, 20, 1, 20) {}
-Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, -20) {}
+
 
 

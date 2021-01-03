@@ -8,6 +8,12 @@
 #include "Coord.hpp"
 #include "Game.hpp"
 #include "Object.hpp"
+#include "Object.hpp"
+#include "Bird.hpp"
+#include "Car.hpp"
+#include "Dinosaur.hpp"
+#include "Truck.hpp"
+#include "Light.hpp"
 #include "GlobalConfig.hpp"
 #include "People.h"
 using namespace std;

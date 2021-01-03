@@ -1,4 +1,5 @@
 #include "Header.h"
+#include <string>
 
 void Game::clearConsole()
 {
@@ -116,14 +117,14 @@ void Game::eventKeyBoardListener()
 {
     while (1)
     {
-        char t = toupper(getch());
+        char t = toupper(_getch());
         GlobalConfig::getInstance()->lastSignal = t;
         if (Game().haveStopSignal())
             return;
     }
 }
 
-void testRun()
+void TruckRun()
 {
     Truck obj;
     obj.run();
@@ -131,9 +132,23 @@ void testRun()
         return;
 }
 
-void testCar()
+void CarRun()
 {
     Car obj;
+    obj.run();
+    if (Game().haveStopSignal())
+        return;
+}
+
+void DinosaurRun() {
+    Dinosaur obj;
+    obj.run();
+    if (Game().haveStopSignal())
+        return;
+}
+
+void BirdFly() {
+    Bird obj;
     obj.run();
     if (Game().haveStopSignal())
         return;
@@ -200,15 +215,19 @@ void Game::showGroundPlay()
     thread draw(Game().drawPixelInQueue);
     thread noti(Game().notiListener);
  
-    thread testObj(testRun);
-    // thread testOther(testCar);
+    thread T(TruckRun);
+    thread C(CarRun);
+    thread D(DinosaurRun);
+    thread B(BirdFly);
     thread people(testPeople);
 
    people.join();
+    T.join();
+    C.join();
+    D.join();
+    B.join();
      Game().goTo(1,1);
     cout<<"herere";
-    testObj.join();
-    // testOther.join();
     
 
     draw.join();
@@ -256,7 +275,7 @@ void Game::showMenu()
             }
         }
 
-        char getKey = toupper(getch());
+        char getKey = toupper(_getch());
         switch (getKey)
         {
         case 'W':
