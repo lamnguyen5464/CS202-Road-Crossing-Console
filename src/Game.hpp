@@ -54,6 +54,7 @@ public:
     //in other thread
     static void drawPixelInQueue();
     static void eventKeyBoardListener();
+    static void showTrafficLight();
 
     
     //

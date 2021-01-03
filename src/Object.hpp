@@ -43,6 +43,22 @@ public:
     int type();
 };
 
+class Dinasour : public Object 
+{
+public:
+    Dinasour();
+    void run();
+    int type();
+};
+
+class Bird : public Object 
+{
+public:
+    Bird();
+    void run();
+    int type();
+};
+
 
 
 
