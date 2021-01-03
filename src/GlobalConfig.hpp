@@ -20,6 +20,7 @@ class GlobalConfig{
     queue<Pixel*> drawingQueue;
     char lastSignal;
     vector< vector<char> > drawing_matrix;
+    char light = '+'; //green
 
     void resetMatrix();
     void initNewData(int setScore);

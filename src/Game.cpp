@@ -96,6 +96,25 @@ void Game::drawPixelInQueue()
             GlobalConfig::getInstance()->drawing_matrix[p->x][p->y] = p->pixel;
 
             Game().goTo(p->x, p->y);
+            if (p->pixel >= '0' && p->pixel <= '9')
+            {
+                Game().textColor(ColorCode_Yellow);
+            }
+            else
+            {
+                if (p->pixel == '+' || p->pixel == '-')
+                {
+                    char currentLight = GlobalConfig::getInstance()->light;
+                    if (currentLight == p->pixel)
+                        Game().textColor(p->pixel == '+' ? ColorCode_Green : ColorCode_Red);
+                    else
+                        Game().textColor(ColorCode_Grey);
+                }
+                else
+                {
+                    Game().textColor(p->pixel == '@' ? ColorCode_Red : ColorCode_Grey);
+                }
+            }
             cout << p->pixel;
         }
     }
@@ -117,30 +136,46 @@ void Game::eventKeyBoardListener()
 {
     while (1)
     {
-        char t = toupper(getch());
+        char t = toupper(_getch());
         GlobalConfig::getInstance()->lastSignal = t;
         if (t == 'Q')
             return;
     }
 }
 
-void testRun()
+void truckRun()
 {
     Truck obj;
     obj.run();
 }
 
-void testCar()
+void carRun()
 {
     Car obj;
     obj.run();
 }
 
+<<<<<<< HEAD
 void moveSound(){
     PlaySoundA(("sound/move.wav"), NULL, SND_SYNC);
 }
 
 void testPeople()
+=======
+void birdRun()
+{
+    Bird obj;
+    obj.run();
+}
+
+void dinasourRun()
+{
+    Dinasour obj;
+    obj.run();
+}
+
+void peopleRun()
+>>>>>>> main
 {
     thread sound;
     People::getPeople()->draw();
@@ -199,6 +234,25 @@ void Game::onNextLevel()
     Game().showScore();
 }
 
+void Game::showTrafficLight()
+{
+    while (!Game().haveStopSignal())
+    {
+        GlobalConfig::getInstance()->light = (GlobalConfig::getInstance()->light == '+') ? '-' : '+';
+        //erase
+        Game().addPixelToQueue(Game().getColumns() - 5, 28, ' ');
+        Game().addPixelToQueue(Game().getColumns() - 5, 29, ' ');
+        Game().addPixelToQueue(1, 23, ' ');
+        Game().addPixelToQueue(1, 24, ' ');
+        //change
+        Game().addPixelToQueue(Game().getColumns() - 5, 28, '+');
+        Game().addPixelToQueue(Game().getColumns() - 5, 29, '-');
+        Game().addPixelToQueue(1, 23, '+');
+        Game().addPixelToQueue(1, 24, '-');
+        Sleep(2000);
+    }
+}
+
 void Game::showGroundPlay()
 {
     GlobalConfig::getInstance()->resetMatrix();
@@ -211,11 +265,20 @@ void Game::showGroundPlay()
     std::thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
 
+<<<<<<< HEAD
     thread testObj(testRun);
     // thread testOther(testCar);
 
     thread testOther(testCar);
     thread people(testPeople);
+=======
+    thread people(peopleRun);
+    thread truck(truckRun);
+    thread car(carRun);
+    thread bird(birdRun);
+    thread dinasour(dinasourRun);
+    thread light(showTrafficLight);
+>>>>>>> main
 
     draw.join();
 
@@ -226,9 +289,12 @@ void Game::showGroundPlay()
     }
     Game().saveGame();
 
+    light.join();
     people.join();
-    testObj.join();
-    testOther.join();
+    truck.join();
+    car.join();
+    bird.join();
+    dinasour.join();
 
     keyboardListener.join();
 
@@ -492,15 +558,28 @@ void Game::removeRectangle(int topLeftX, int topLeftY, int bottomRightX, int bot
 }
 void Game::showReplayMenu()
 {
+    string s1 = "YOU lOSE, GUYS :((";
+    string s2 = " Current Score: ";
+    string s3 = "Press Q to back to menu";
     Game().clearConsole();
-    Game().goTo(1, 1);
 
-    cout << "you lose!" << endl;
-    cout << "Current Score: " << GlobalConfig::getInstance()->currentScore << endl;
-    cout << "Press Q to back to menu" << endl;
+    Game().textColor(ColorCode_Pink);
+    Game().drawRectangle((getColumns() - s3.length()) / 2 - 1, getRows() / 2 - 7, getColumns() - (getColumns() - s3.length()) / 2 - 1, getRows() / 2 - 1);
+    Game().goTo((getColumns() - s1.length()) / 2, getRows() / 2 - 6);
+
+    Game().textColor(ColorCode_Blue);
+    cout << s1 << endl;
+    
+    Game().goTo((getColumns() - s1.length()) / 2, getRows() / 2 - 4);
+    cout << s2 << GlobalConfig::getInstance()->currentScore << endl;
+   
+    Game().textColor(ColorCode_DarkGreen);
+    Game().goTo((getColumns() - s3.length()) / 2, getRows() / 2 - 2);
+    cout << s3 << endl;
 }
 
-void clearAndShowMenu() {
+void clearAndShowMenu()
+{
     Game().clearConsole();
     //instruction
 
@@ -522,7 +601,6 @@ void clearAndShowMenu() {
     Game().textColor(default_ColorCode);
 
     Game().drawRectangle(Game().getColumns() / 2 - 10, Game().getRows() / 4 + 8, Game().getColumns() / 2 + 10, Game().getRows() / 4 + 15);
-
 }
 
 void Game::showMenu()
@@ -542,11 +620,11 @@ void Game::showMenu()
         for (int i = 0; i < 3; i++)
         {
             Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i * 2);
-            Game().textColor( choice == i ?  ColorCode_DarkGreen : ColorCode_Grey);
+            Game().textColor(choice == i ? ColorCode_DarkGreen : ColorCode_Grey);
             cout << options[i];
         }
 
-        char getKey = toupper(getch());
+        char getKey = toupper(_getch());
         switch (getKey)
         {
         case 'W':
