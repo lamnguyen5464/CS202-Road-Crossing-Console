@@ -96,6 +96,11 @@ void Game::drawPixelInQueue()
             GlobalConfig::getInstance()->drawing_matrix[p->x][p->y] = p->pixel;
 
             Game().goTo(p->x, p->y);
+            if (p->pixel >= '0' && p->pixel <= '9'){
+                Game().textColor(ColorCode_Yellow);
+            }else{
+                Game().textColor(p->pixel == '@' ? ColorCode_Red : ColorCode_Grey);
+            }
             cout << p->pixel;
         }
     }
@@ -467,9 +472,11 @@ void Game::showReplayMenu()
     Game().clearConsole();
     Game().goTo(1, 1);
 
-    cout << "you lose!" << endl;
-    cout << "Current Score: " << GlobalConfig::getInstance()->currentScore << endl;
-    cout << "Press Q to back to menu" << endl;
+    Game().textColor(ColorCode_Yellow);
+    cout << "You lose, guy :((" << endl;
+    cout << " Current Score: " << GlobalConfig::getInstance()->currentScore << endl;
+    Game().textColor(ColorCode_Grey);
+    cout << " Press Q to back to menu" << endl;
 }
 
 void clearAndShowMenu() {
