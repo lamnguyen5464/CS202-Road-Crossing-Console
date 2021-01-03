@@ -41,14 +41,15 @@ public:
     static void loadGame();
     static void onNextLevel();
 
-    //screens:
     void drawTitle(int height, int width);
     void drawRectangle(int, int, int, int);
     void removeRectangle(int, int, int, int);
 
+    static void showScore();
     // screens:
     static void showMenu();
     static void showGroundPlay();
+    static void showReplayMenu();
 
     //in other thread
     static void drawPixelInQueue();
