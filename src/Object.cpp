@@ -50,6 +50,7 @@ void Object::drawAll()
     int i = 0;
     while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
     {
+        if (Game().haveStopSignal()) return;
         draw(curX + i * delta, curY);
         ++i;
     }
@@ -60,6 +61,7 @@ void Object::eraseAll()
     int i = 0;
     while (curX + i * delta < Game::getColumns() - 2 && curX + i * delta > 0)
     {
+        if (Game().haveStopSignal()) return;
         erase(curX + i * delta, curY);
         ++i;
     }

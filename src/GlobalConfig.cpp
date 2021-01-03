@@ -20,6 +20,9 @@ GlobalConfig *GlobalConfig::getInstance()
 void GlobalConfig::resetMatrix()
 {
     drawing_matrix.clear();
+    while (drawingQueue.size()){
+        drawingQueue.pop();
+    }
     vector<char> tmp;
     for (int i = 0; i <= Game().getColumns(); i++)
     {

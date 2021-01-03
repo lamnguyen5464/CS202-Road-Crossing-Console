@@ -11,15 +11,23 @@ People::People()
 
 void People::draw()
 {
-    if (curY <= 2){
-        GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 10);
+    if (curY <= 2)
+    {
         Game().onNextLevel();
         return;
     }
 
     for (int i = 0; i < body.size(); ++i)
     {
-        Game::addPixelToQueue(curX + body[i].x, curY + body[i].y, pixel);
+        int x = curX + body[i].x;
+        int y = curY + body[i].y;
+
+        if (x < 0 || x > Game().getColumns()-1)
+        {
+            GlobalConfig::getInstance()->lastSignal = 'L';
+            return;
+        }
+        Game::addPixelToQueue(x, y, pixel);
     }
 }
 
@@ -31,11 +39,13 @@ void People::erase(int x, int y)
     }
 }
 
-People* People::getPeople() {
-    if (ppl == nullptr) {
+People *People::getPeople()
+{
+    if (ppl == nullptr)
+    {
         ppl = new People;
     }
     return ppl;
 }
 
-People* People::ppl = nullptr;
+People *People::ppl = nullptr;
