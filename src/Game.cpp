@@ -90,6 +90,7 @@ void Game::drawPixelInQueue()
             if (p->pixel != ' ' && tmp != ' ')
             {
                 GlobalConfig::getInstance()->lastSignal = 'L';
+                return;
             }
 
             GlobalConfig::getInstance()->drawing_matrix[p->x][p->y] = p->pixel;
@@ -103,9 +104,8 @@ void Game::drawPixelInQueue()
 void Game::addPixelToQueue(int x, int y, char pixel)
 {
     Pixel *p = new Pixel(x, y, pixel);
-
     //validate
-    if (x < 0 || y < y || x > Game().getColumns() || y > Game().getRows())
+    if (x < 0 || y < 0 || x > Game().getColumns() || y > Game().getRows())
     {
         return;
     }
@@ -119,7 +119,8 @@ void Game::eventKeyBoardListener()
     {
         char t = toupper(getch());
         GlobalConfig::getInstance()->lastSignal = t;
-        if (t == 'Q') return;
+        if (t == 'Q')
+            return;
     }
 }
 
@@ -154,11 +155,13 @@ void testPeople()
             sound.detach();
             sound = thread(moveSound);
 
-            GlobalConfig::getInstance()->lastSignal = ' ';
+            if (!Game().haveStopSignal())
+                GlobalConfig::getInstance()->lastSignal = ' ';
         }
     }
 }
 
+<<<<<<< HEAD
 // void Game::notiListener()
 // {
 //     // while (1)
@@ -177,6 +180,10 @@ void testPeople()
 void Game::onNextLevel(){
     
 void Game::showScore(){
+=======
+void Game::showScore()
+{
+>>>>>>> main
     int currentColumn = Game().getColumns() - 5;
     int score = GlobalConfig::getInstance()->currentScore;
 
@@ -193,7 +200,6 @@ void Game::onNextLevel()
 {
     GlobalConfig::getInstance()->initNewData(GlobalConfig::getInstance()->currentScore + 10);
     Game().showScore();
-
 }
 
 void Game::showGroundPlay()
@@ -201,7 +207,7 @@ void Game::showGroundPlay()
     GlobalConfig::getInstance()->resetMatrix();
     Game().clearConsole();
     Game().showScore();
-    Game().goTo(1, 40);
+    Game().goTo(0, 40);
 
     cout << "@ Press Q to quit and save" << endl;
 
@@ -214,16 +220,16 @@ void Game::showGroundPlay()
     thread testOther(testCar);
     thread people(testPeople);
 
-    people.join();
-
     draw.join();
 
-    if (GlobalConfig::getInstance()->lastSignal == 'L'){
+    if (GlobalConfig::getInstance()->lastSignal == 'L')
+    {
         showReplayMenu();
         GlobalConfig::getInstance()->initNewData(0);
     }
     Game().saveGame();
 
+    people.join();
     testObj.join();
     testOther.join();
 
@@ -232,6 +238,7 @@ void Game::showGroundPlay()
     GlobalConfig::getInstance()->lastSignal = ' ';
 }
 
+<<<<<<< HEAD
 void Game::fontsize(int x, int y){
     PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();  
   lpConsoleCurrentFontEx->cbSize = sizeof(CONSOLE_FONT_INFOEX);  
@@ -239,75 +246,245 @@ void Game::fontsize(int x, int y){
   lpConsoleCurrentFontEx->dwFontSize.X = x;  
   lpConsoleCurrentFontEx->dwFontSize.Y = y;  
   SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, lpConsoleCurrentFontEx); 
+=======
+void Game::fontsize(int x, int y)
+{
+    PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx = new CONSOLE_FONT_INFOEX();
+    lpConsoleCurrentFontEx->cbSize = sizeof(CONSOLE_FONT_INFOEX);
+    GetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, lpConsoleCurrentFontEx);
+    lpConsoleCurrentFontEx->dwFontSize.X = x;
+    lpConsoleCurrentFontEx->dwFontSize.Y = y;
+    SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), 0, lpConsoleCurrentFontEx);
 }
 
-void Game::textColor(int x){
-   HANDLE cout_handle=GetStdHandle(STD_OUTPUT_HANDLE);
-   cout_handle=GetStdHandle(STD_OUTPUT_HANDLE);
-   SetConsoleTextAttribute(cout_handle, x);
+void Game::textColor(int x)
+{
+    HANDLE cout_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    cout_handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(cout_handle, x);
+>>>>>>> main
 }
 
-void Game::drawTitle(int height, int width) {
-    
-    const signed char TITLE[][82] = { { 32,95,95,95,95,95,32,32,        32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		  32,32,32,32,32,'_',32,	   32,32,32,32,32,  32,32,32,'_','_','_','_',32,	32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,	   32,32,32,32,32,		 32,32,32,	  32,32,32,32,32,32,32,		   },
-						                { (char) 178,32,32,'_','_',32,92,32,	 32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		  32,32,32,32,(char) 178,32,(char) 178,	   32,32,32,32,32,  32,32,'/',32,'_','_','_',(char) 178,	32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,	   32,32,32,32,32,		 32,'_',32,	  32,32,32,32,32,32,32,		   },
-						                { (char) 178,32,(char) 178,'_','_',')',32,')', 32,32,'_','_','_',32,32,	 32,32,'_','_',32,'_',32,	  32,32,'_','_',(char) 178,32,(char) 178,	   32,32,32,32,32,  32,'/',32,32,(char) 178,32,32,32,		32,'_',32,'_','_',32,	 32,32,'_','_','_',32,32,	 32,'_','_','_',32,    32,'_','_','_',32,	 '(','_',')', 32,'_',32,'_','_',32,32,	  32,32,'_','_',32,'_',32},
-							            { (char) 178,32,32,'_',32,32,'/',32,	 32,'/',32,'_',32,'\\',32,	 32,'/',32,'_','\'',32,(char) 178,	  32,'/',32,'_',32,32,(char) 178,	   32,32,32,32,32,  (char) 124,'|',32,32,(char) 178,32,32,32,		(char) 178,32,'\'','_','_',(char) 178, 32,'/',32,'_',32,'\\',32,	 '/',32,'_','_',(char) 178,   '/',32,'_','_',(char) 178,   (char) 178,32,(char) 178,  '|',32,'\'','_',32,'\\',32, 32,'/',32,'_','\'',32,(char) 178},
-							            { (char) 178,32,(char) 178,32,92,32,92,32,	 '(',32,'(','_',')',32,')',	 '(',32,'(','_',')',32,(char) 178,	  '(',32,'(','_',')',32,(char) 178,   32,32,32,32,32,  32,'\\',32,32,(char) 178,'_','_','_',  (char) 178,32,(char) 178,32,32,32,	 '(',32,'(','_',')',32,')',  '\\','_','_',32,'\\', '\\','_','_',32,'\\', (char) 178,32,(char) 178,  '|',32,(char) 178,32,'|',32,'|',	  '(',32,'(','_',')',32,(char) 178},
-							            { (char) 178,'_',(char) 178,32,32,92,'_',92,	 32,'\\','_','_','_','/',32, 32,'\\','_','_',',','_',(char) 178, 32,'\\','_','_',',','_',(char) 178, 32,32,32,32,32,  32,32,'\\','_','_','_','_',(char) 178, (char) 178,'_',(char) 178,32,32,32,	 32,'\\','_','_','_','/',32, (char) 178,'_','_','_','/',  (char) 178,'_','_','_','/',  (char) 178,'_',(char) 178, '|','_',(char) 178,32,'|','_','|', 32,'\\','_','_',',',32,(char) 178},
-							            { 32,32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,32,32,		  32,32,32,32,32,32,32,		   32,32,32,32,32,  32,32,32,32,32,32,32,32,		32,32,32,32,32,32,		 32,32,32,32,32,32,32,		 32,32,32,32,32,	   32,32,32,32,32,		 32,32,32,	  32,32,32,32,32,32,32,		  32,(char) 178,'_','_','_','/'} };
+void Game::drawTitle(int height, int width)
+{
+
+    const signed char TITLE[][82] = {{
+                                         32,
+                                         95,
+                                         95,
+                                         95,
+                                         95,
+                                         95,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         '_',
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         '_',
+                                         '_',
+                                         '_',
+                                         '_',
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                     },
+                                     {
+                                         (char)178,
+                                         32,
+                                         32,
+                                         '_',
+                                         '_',
+                                         32,
+                                         92,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         (char)178,
+                                         32,
+                                         (char)178,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         '/',
+                                         32,
+                                         '_',
+                                         '_',
+                                         '_',
+                                         (char)178,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         '_',
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                         32,
+                                     },
+                                     {(char)178, 32, (char)178, '_', '_', ')', 32, ')', 32, 32, '_', '_', '_', 32, 32, 32, 32, '_', '_', 32, '_', 32, 32, 32, '_', '_', (char)178, 32, (char)178, 32, 32, 32, 32, 32, 32, '/', 32, 32, (char)178, 32, 32, 32, 32, '_', 32, '_', '_', 32, 32, 32, '_', '_', '_', 32, 32, 32, '_', '_', '_', 32, 32, '_', '_', '_', 32, '(', '_', ')', 32, '_', 32, '_', '_', 32, 32, 32, 32, '_', '_', 32, '_', 32},
+                                     {(char)178, 32, 32, '_', 32, 32, '/', 32, 32, '/', 32, '_', 32, '\\', 32, 32, '/', 32, '_', '\'', 32, (char)178, 32, '/', 32, '_', 32, 32, (char)178, 32, 32, 32, 32, 32, (char)124, '|', 32, 32, (char)178, 32, 32, 32, (char)178, 32, '\'', '_', '_', (char)178, 32, '/', 32, '_', 32, '\\', 32, '/', 32, '_', '_', (char)178, '/', 32, '_', '_', (char)178, (char)178, 32, (char)178, '|', 32, '\'', '_', 32, '\\', 32, 32, '/', 32, '_', '\'', 32, (char)178},
+                                     {(char)178, 32, (char)178, 32, 92, 32, 92, 32, '(', 32, '(', '_', ')', 32, ')', '(', 32, '(', '_', ')', 32, (char)178, '(', 32, '(', '_', ')', 32, (char)178, 32, 32, 32, 32, 32, 32, '\\', 32, 32, (char)178, '_', '_', '_', (char)178, 32, (char)178, 32, 32, 32, '(', 32, '(', '_', ')', 32, ')', '\\', '_', '_', 32, '\\', '\\', '_', '_', 32, '\\', (char)178, 32, (char)178, '|', 32, (char)178, 32, '|', 32, '|', '(', 32, '(', '_', ')', 32, (char)178},
+                                     {(char)178, '_', (char)178, 32, 32, 92, '_', 92, 32, '\\', '_', '_', '_', '/', 32, 32, '\\', '_', '_', ',', '_', (char)178, 32, '\\', '_', '_', ',', '_', (char)178, 32, 32, 32, 32, 32, 32, 32, '\\', '_', '_', '_', '_', (char)178, (char)178, '_', (char)178, 32, 32, 32, 32, '\\', '_', '_', '_', '/', 32, (char)178, '_', '_', '_', '/', (char)178, '_', '_', '_', '/', (char)178, '_', (char)178, '|', '_', (char)178, 32, '|', '_', '|', 32, '\\', '_', '_', ',', 32, (char)178},
+                                     {32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, (char)178, '_', '_', '_', '/'}};
 
     //(char)168->(char)124
-    int row = (getRows()- height) / 2-10;
-	int col = (getColumns() - width) / 2;
-	int i, j;
-	for (i = 0; i < height; ++i) {
-		goTo(col, row++);
-		for (j = 0; j < width; ++j) {
-			Game().textColor(ColorCode_Yellow);
-			cout << TITLE[i][j];
-		}
-	}
-	Game().textColor(default_ColorCode);
+    int row = (getRows() - height) / 2 - 10;
+    int col = (getColumns() - width) / 2;
+    int i, j;
+    for (i = 0; i < height; ++i)
+    {
+        goTo(col, row++);
+        for (j = 0; j < width; ++j)
+        {
+            Game().textColor(ColorCode_Yellow);
+            cout << TITLE[i][j];
+        }
+    }
+    Game().textColor(default_ColorCode);
 }
 
-void Game::drawRectangle(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY){
-   --topLeftX;
-	--topLeftY;
-	++bottomRightX;
-	++bottomRightY; 
-	
-	int i;
-
-    Game().goTo(topLeftX, topLeftY);
-	cout << char(218);
-	for (i = topLeftX + 1; i < bottomRightX; ++i)
-		cout << char(196);
-	cout << char(191);
-
-	for (i = topLeftY + 1; i < bottomRightY; ++i) {
-		Game().goTo(topLeftX, i);
-		cout << char(179);
-		Game().goTo(bottomRightX, i);
-		cout << char(179);
-	}
-
-	Game().goTo(topLeftX, bottomRightY);
-	cout << char(192);
-	for (i = topLeftX + 1; i < bottomRightX; ++i)
-		cout << char(196);
-	cout << char(217);
-}
-
-void Game::removeRectangle(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY){
+void Game::drawRectangle(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
+{
     --topLeftX;
-	--topLeftY;
-	++bottomRightX;
-	++bottomRightY;
+    --topLeftY;
+    ++bottomRightX;
+    ++bottomRightY;
 
-	int i;
+    int i;
 
     Game().goTo(topLeftX, topLeftY);
+    cout << char(218);
+    for (i = topLeftX + 1; i < bottomRightX; ++i)
+        cout << char(196);
+    cout << char(191);
+
+    for (i = topLeftY + 1; i < bottomRightY; ++i)
+    {
+        Game().goTo(topLeftX, i);
+        cout << char(179);
+        Game().goTo(bottomRightX, i);
+        cout << char(179);
+    }
+
+    Game().goTo(topLeftX, bottomRightY);
+    cout << char(192);
+    for (i = topLeftX + 1; i < bottomRightX; ++i)
+        cout << char(196);
+    cout << char(217);
+}
+
+void Game::removeRectangle(int topLeftX, int topLeftY, int bottomRightX, int bottomRightY)
+{
+    --topLeftX;
+    --topLeftY;
+    ++bottomRightX;
+    ++bottomRightY;
+
+    int i;
+
+    Game().goTo(topLeftX, topLeftY);
+<<<<<<< HEAD
 	cout << " ";
 	for (i = topLeftX + 1; i < bottomRightX; ++i)
 		cout << " ";
@@ -332,6 +509,59 @@ void Game::showReplayMenu(){
     cout<<"you lose!"<<endl;
     cout<<"Current Score: "<<GlobalConfig::getInstance()->currentScore<<endl;
     cout<<"Press Q to back to menu"<<endl;
+=======
+    cout << " ";
+    for (i = topLeftX + 1; i < bottomRightX; ++i)
+        cout << " ";
+    cout << " ";
+
+    for (i = topLeftY + 1; i < bottomRightY; ++i)
+    {
+        Game().goTo(topLeftX, i);
+        cout << " ";
+        Game().goTo(bottomRightX, i);
+        cout << " ";
+    }
+
+    Game().goTo(topLeftX, bottomRightY);
+    cout << " ";
+    for (i = topLeftX + 1; i < bottomRightX; ++i)
+        cout << " ";
+    cout << " ";
+}
+void Game::showReplayMenu()
+{
+    Game().clearConsole();
+    Game().goTo(1, 1);
+
+    cout << "you lose!" << endl;
+    cout << "Current Score: " << GlobalConfig::getInstance()->currentScore << endl;
+    cout << "Press Q to back to menu" << endl;
+}
+
+void clearAndShowMenu() {
+    Game().clearConsole();
+    //instruction
+
+    string title = "---------MENU---------";
+    string name = "ROSSING ROAD";
+    Game().goTo(1, 30);
+    cout << "Type \'W\' for up" << endl
+         << " Type \'S\' for down";
+    Game().drawRectangle(1, 29, 18, 32);
+
+    //content
+    Game().goTo((Game().getColumns() - title.length()) / 2, 18); //allign center
+    Game().textColor(ColorCode_Yellow);
+    cout << title;
+    Game().textColor(ColorCode_DarkBlue);
+    Game().goTo(Game().getColumns() / 2, 2);
+
+    Game().drawTitle(7, 82);
+    Game().textColor(default_ColorCode);
+
+    Game().drawRectangle(Game().getColumns() / 2 - 10, Game().getRows() / 4 + 8, Game().getColumns() / 2 + 10, Game().getRows() / 4 + 15);
+>>>>>>> main
 
 }
 
@@ -343,11 +573,13 @@ void Game::showMenu()
         "Load game",
         "Exit",
     };
-    string title = "---------MENU---------";
-    string name="ROSSING ROAD";
     int choice = 0;
+
+    clearAndShowMenu();
+
     while (1)
     {
+<<<<<<< HEAD
         Game().clearConsole();
         //instruction
         Game().goTo(1, 30);
@@ -377,6 +609,13 @@ void Game::showMenu()
                 Game().textColor(ColorCode_Grey);
                 cout<<">>>";
             }
+=======
+        for (int i = 0; i < 3; i++)
+        {
+            Game().goTo((Game().getColumns() - options[i].length()) / 2, 20 + i * 2);
+            Game().textColor( choice == i ?  ColorCode_DarkGreen : ColorCode_Grey);
+            cout << options[i];
+>>>>>>> main
         }
 
         char getKey = toupper(getch());
@@ -392,6 +631,7 @@ void Game::showMenu()
             switch (choice)
             {
             case 0:
+                GlobalConfig::getInstance()->first = true;
                 GlobalConfig::getInstance()->initNewData(0);
                 Game().showGroundPlay();
                 break;
@@ -402,7 +642,7 @@ void Game::showMenu()
             case 2:
                 return;
             }
-            break;
+            clearAndShowMenu();
         }
     }
 }
@@ -413,6 +653,7 @@ void Game::saveGame()
     gameData.open("game_data.txt");
     gameData << GlobalConfig::getInstance()->currentScore << endl;
     gameData << People::getPeople()->curX << " " << People::getPeople()->curY << endl;
+    gameData << GlobalConfig::getInstance()->d1 << " " << GlobalConfig::getInstance()->d2 << " " << GlobalConfig::getInstance()->d3 << " " << GlobalConfig::getInstance()->d4 << endl;
     gameData.close();
 }
 
@@ -429,7 +670,7 @@ void Game::loadGame()
     {
         gameData >> GlobalConfig::getInstance()->currentScore;
         gameData >> People::getPeople()->curX >> People::getPeople()->curY;
-        //add more data if need
+        gameData >> GlobalConfig::getInstance()->d1 >> GlobalConfig::getInstance()->d2 >> GlobalConfig::getInstance()->d3 >> GlobalConfig::getInstance()->d4;
         gameData.close();
     }
 }

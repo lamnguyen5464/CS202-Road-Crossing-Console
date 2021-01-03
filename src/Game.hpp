@@ -44,7 +44,10 @@ public:
     static void loadGame();
     static void onNextLevel();
 
+<<<<<<< HEAD
     //screens:
+=======
+>>>>>>> main
     void drawTitle(int height, int width);
     void drawRectangle(int, int, int, int);
     void removeRectangle(int, int, int, int);
@@ -67,6 +70,10 @@ public:
     //void soundSetting(bool &soundOn); 
     //void moveSound();
     //
+<<<<<<< HEAD
+=======
+    static void notiListener();
+>>>>>>> main
 };
 
 #endif
