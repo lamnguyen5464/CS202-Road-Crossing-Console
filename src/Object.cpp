@@ -11,45 +11,51 @@ Object::Object(int x, int y, int z, int t)
     switch (curY)
     {
     case 30:
-        body.push_back(Coord(0, 0));
-        // body.push_back(Coord(1, 0));
-        // body.push_back(Coord(2, 0));
-        // body.push_back(Coord(0, 1));
-        // body.push_back(Coord(1, 1));
-        // body.push_back(Coord(2, 1));
-        // body.push_back(Coord(3, 1));
-        // body.push_back(Coord(4, 1));
-        // body.push_back(Coord(-1, 1));
-        // body.push_back(Coord(-2, 1));
+         body.push_back(Coord(0, 0));
+         body.push_back(Coord(1, 0));
+         body.push_back(Coord(2, 0));
+         body.push_back(Coord(0, 1));
+         body.push_back(Coord(1, 1));
+         body.push_back(Coord(2, 1));
+         body.push_back(Coord(3, 1));
+         body.push_back(Coord(4, 1));
+         body.push_back(Coord(-1, 1));
+         body.push_back(Coord(-2, 1));
         break;
     case 25:
         body.push_back(Coord(0, 0));
-        // body.push_back(Coord(0, 1));
-        // body.push_back(Coord(1, 0));
-        // body.push_back(Coord(1, 1));
-        // body.push_back(Coord(2, 1));
-        // body.push_back(Coord(-1, 1));
-        // body.push_back(Coord(-1, 0));
+         body.push_back(Coord(0, 1));
+         body.push_back(Coord(1, 0));
+         body.push_back(Coord(1, 1));
+         body.push_back(Coord(2, 1));
+         body.push_back(Coord(-1, 1));
+         body.push_back(Coord(-1, 0));
         break;
     case 15:
-        body.push_back(Coord(0, 3));
-        // body.push_back(Coord(1, 2));
-        // body.push_back(Coord(1, 3));
-        // body.push_back(Coord(2, 1));
-        // body.push_back(Coord(2, 2));
-        // body.push_back(Coord(2, 3));
-        // body.push_back(Coord(3, 1));
-        // body.push_back(Coord(3, 2));
-        // body.push_back(Coord(3, 3));
-        // body.push_back(Coord(4, 0));
-        // body.push_back(Coord(5, 0));
+        /*body.push_back(Coord(0, 3));
+         body.push_back(Coord(1, 2));
+         body.push_back(Coord(1, 3));
+         body.push_back(Coord(2, 1));
+         body.push_back(Coord(2, 2));
+         body.push_back(Coord(2, 3));
+         body.push_back(Coord(3, 1));
+         body.push_back(Coord(3, 2));
+         body.push_back(Coord(3, 3));
+         body.push_back(Coord(4, 0));
+         body.push_back(Coord(5, 0));*/
+        body.push_back(Coord(4, 0));
+        body.push_back(Coord(3, 0));
+        body.push_back(Coord(2, 1));
+        body.push_back(Coord(1, 1));
+        body.push_back(Coord(0, 2));
+        body.push_back(Coord(1, 2));
         break;
     case 10:
-        body.push_back(Coord(1, -1));
-        // body.push_back(Coord(2, -1));
-        // body.push_back(Coord(0, 0));
-        // body.push_back(Coord(-1, -1));
-        // body.push_back(Coord(-2, -1));
+         body.push_back(Coord(1, -1));
+         body.push_back(Coord(2, -1));
+         body.push_back(Coord(0, 0));
+         body.push_back(Coord(-1, -1));
+         body.push_back(Coord(-2, -1));
         break;
     default:
         break;
@@ -175,16 +181,20 @@ void Object::run()
         switch (type())
         {
         case 1:
-            Sleep(20);
-            break;
-        case 2:
+            //Sleep(20);
             Sleep(200);
             break;
+        case 2:
+            //Sleep(200);
+            Sleep(1000);
+            break;
         case 3:
-            Sleep(100);
+            //Sleep(100);
+            Sleep(500);
             break;
         case 4:
-            Sleep(150);
+            //Sleep(150);
+            Sleep(700);
             break;
         default:
             break;

@@ -1,4 +1,5 @@
 #include "Header.h"
+#define SetConsoleTitle
 // rows: 41 (0 - 40)
 // colums: 134 (0 - 133)
 int main() 
