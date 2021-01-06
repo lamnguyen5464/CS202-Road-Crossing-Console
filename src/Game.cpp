@@ -232,7 +232,7 @@ void Game::showGroundPlay()
 
     cout << "@ Press Q to quit and save" << endl;
 
-    std::thread keyboardListener(Game().eventKeyBoardListener);
+    thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
 
     thread people(peopleRun);

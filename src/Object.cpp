@@ -100,8 +100,8 @@ void Object::eraseAll()
 void Object::updateCursor()
 {
     curX += move;
-    if (move == 1 && curX == 1 + delta)
-        curX = 1;
+    if (move == 1 && curX == 3 + delta)
+        curX = 3;
     else if (move == -1 && curX == Game::getColumns() - 3 + delta)
         curX = Game::getColumns() - 3;
 }
@@ -115,7 +115,7 @@ void Object::updateDelta()
         delta /= 2;
         if (move > 0)
         {
-            curX = 1;
+            curX = 3;
         }
         else
         {
@@ -124,10 +124,10 @@ void Object::updateDelta()
         switch (type())
         {
         case 1:
-
+            GlobalConfig::getInstance()->d1 = delta;
             break;
         case 2:
-
+            GlobalConfig::getInstance()->d2 = delta;
             break;
         case 3:
             GlobalConfig::getInstance()->d3 = delta;
@@ -154,6 +154,7 @@ void Object::run()
             return;
         if (GlobalConfig::getInstance()->light == '-' && (type() == 3 || type() == 4))
             continue;
+
         eraseAll();
         updateCursor();
         updateDelta();
@@ -182,24 +183,24 @@ void Bird::run()
     Object::run();
 }
 
+int Bird::type() { return 1; }
+int Dinasour::type() { return 2; }
 int Car::type() { return 3; }
 int Truck::type() { return 4; }
-int Dinasour::type() { return 2; }
-int Bird::type() { return 1; }
 
-Car::Car() : Object(1, 25, 1, Game::getColumns() - 1)
+Car::Car() : Object(3, 25, 1, Game::getColumns() - 1)
 {
     if (GlobalConfig::getInstance()->d3 != 0)
         setDelta(GlobalConfig::getInstance()->d3);
 }
 
-Truck::Truck() : Object(1, 30, -1, (Game::getColumns() - 1) * (-1))
+Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, (Game::getColumns() - 1) * (-1))
 {
     if (GlobalConfig::getInstance()->d4 != 0)
         setDelta(GlobalConfig::getInstance()->d4);
 }
 
-Dinasour::Dinasour() : Object(Game::getColumns() / 3, 15, 1, (Game::getColumns() - 1) * -1)
+Dinasour::Dinasour() : Object(Game::getColumns() / 3, 15, 1, Game::getColumns() - 1)
 {
     if (GlobalConfig::getInstance()->d1 != 0)
         setDelta(GlobalConfig::getInstance()->d1);
