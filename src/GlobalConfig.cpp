@@ -43,9 +43,9 @@ void GlobalConfig::initNewData(int setScore)
         GlobalConfig::getInstance()->d2 = 0;
         GlobalConfig::getInstance()->d3 = 0;
         GlobalConfig::getInstance()->d4 = 0;
+        // GlobalConfig::getInstance()->resetMatrix();
     }
-    if (first) first = false;
-    else updated = false;
+    updated = false;
     People::getPeople()->curX = Game::getColumns() / 2;
     People::getPeople()->curY = Game::getRows() - 1;
 }

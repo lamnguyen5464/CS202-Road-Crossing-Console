@@ -12,7 +12,7 @@ class Object
 private:
     char pixel;
     vector<Coord> body;
-    int curX, curY, delta, move;
+    int curX, curY, delta, move, start;
 public:
     Object() = default;
     Object(int x, int y, int z, int t);
@@ -24,6 +24,7 @@ public:
     void updateDelta();
     virtual int type() = 0;
     void setDelta(int n);
+    void setStart(int n);
 
     virtual void run();
 };
