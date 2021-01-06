@@ -12,44 +12,44 @@ Object::Object(int x, int y, int z, int t)
     {
     case 30:
         body.push_back(Coord(0, 0));
-        body.push_back(Coord(1, 0));
-        body.push_back(Coord(2, 0));
-        body.push_back(Coord(0, 1));
-        body.push_back(Coord(1, 1));
-        body.push_back(Coord(2, 1));
-        body.push_back(Coord(3, 1));
-        body.push_back(Coord(4, 1));
-        body.push_back(Coord(-1, 1));
-        body.push_back(Coord(-2, 1));
+        // body.push_back(Coord(1, 0));
+        // body.push_back(Coord(2, 0));
+        // body.push_back(Coord(0, 1));
+        // body.push_back(Coord(1, 1));
+        // body.push_back(Coord(2, 1));
+        // body.push_back(Coord(3, 1));
+        // body.push_back(Coord(4, 1));
+        // body.push_back(Coord(-1, 1));
+        // body.push_back(Coord(-2, 1));
         break;
     case 25:
         body.push_back(Coord(0, 0));
-        body.push_back(Coord(0, 1));
-        body.push_back(Coord(1, 0));
-        body.push_back(Coord(1, 1));
-        body.push_back(Coord(2, 1));
-        body.push_back(Coord(-1, 1));
-        body.push_back(Coord(-1, 0));
+        // body.push_back(Coord(0, 1));
+        // body.push_back(Coord(1, 0));
+        // body.push_back(Coord(1, 1));
+        // body.push_back(Coord(2, 1));
+        // body.push_back(Coord(-1, 1));
+        // body.push_back(Coord(-1, 0));
         break;
     case 15:
         body.push_back(Coord(0, 3));
-        body.push_back(Coord(1, 2));
-        body.push_back(Coord(1, 3));
-        body.push_back(Coord(2, 1));
-        body.push_back(Coord(2, 2));
-        body.push_back(Coord(2, 3));
-        body.push_back(Coord(3, 1));
-        body.push_back(Coord(3, 2));
-        body.push_back(Coord(3, 3));
-        body.push_back(Coord(4, 0));
-        body.push_back(Coord(5, 0));
+        // body.push_back(Coord(1, 2));
+        // body.push_back(Coord(1, 3));
+        // body.push_back(Coord(2, 1));
+        // body.push_back(Coord(2, 2));
+        // body.push_back(Coord(2, 3));
+        // body.push_back(Coord(3, 1));
+        // body.push_back(Coord(3, 2));
+        // body.push_back(Coord(3, 3));
+        // body.push_back(Coord(4, 0));
+        // body.push_back(Coord(5, 0));
         break;
     case 10:
         body.push_back(Coord(1, -1));
-        body.push_back(Coord(2, -1));
-        body.push_back(Coord(0, 0));
-        body.push_back(Coord(-1, -1));
-        body.push_back(Coord(-2, -1));
+        // body.push_back(Coord(2, -1));
+        // body.push_back(Coord(0, 0));
+        // body.push_back(Coord(-1, -1));
+        // body.push_back(Coord(-2, -1));
         break;
     default:
         break;
@@ -100,10 +100,19 @@ void Object::eraseAll()
 void Object::updateCursor()
 {
     curX += move;
-    if (move == 1 && curX == 3 + delta)
-        curX = 3;
-    else if (move == -1 && curX == Game::getColumns() - 3 + delta)
-        curX = Game::getColumns() - 3;
+
+    // if (move == 1 && curX == 3 + delta)
+    //     curX = 3;
+    // else if (move == -1 && curX == Game::getColumns() - 3 + delta)
+    //     curX = Game::getColumns() - 3;
+    if (type() == 2 || type() == 3) {
+        if (curX == start + delta) curX = start;
+        else if (curX == Game::getColumns() - 2) curX = 2;
+    }
+    else {
+        if (curX == start + delta) curX = start;
+        else if (curX == 1) curX = start;
+    }
 }
 
 void Object::updateDelta()
@@ -119,7 +128,7 @@ void Object::updateDelta()
         }
         else
         {
-            curX = Game::getColumns() - 3;
+            curX = Game::getColumns() - 2;
         }
         switch (type())
         {
@@ -146,6 +155,10 @@ void Object::setDelta(int n)
     delta = n;
 }
 
+void Object::setStart(int n) {
+    start = n;
+}
+
 void Object::run()
 {
     while (1)
@@ -156,10 +169,26 @@ void Object::run()
             continue;
 
         eraseAll();
-        updateCursor();
         updateDelta();
+        updateCursor();
         drawAll();
-        Sleep(250);
+        switch (type())
+        {
+        case 1:
+            Sleep(20);
+            break;
+        case 2:
+            Sleep(200);
+            break;
+        case 3:
+            Sleep(100);
+            break;
+        case 4:
+            Sleep(150);
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -188,26 +217,30 @@ int Dinasour::type() { return 2; }
 int Car::type() { return 3; }
 int Truck::type() { return 4; }
 
+Bird::Bird() : Object(Game::getColumns() / 2, 10, -1, (Game::getColumns() - 1) * (-1))
+{
+    if (GlobalConfig::getInstance()->d1 != 0)
+        setDelta(GlobalConfig::getInstance()->d1);
+    setStart(Game::getColumns() - 2);
+}
+
+Dinasour::Dinasour() : Object(Game::getColumns() / 3, 15, 1, Game::getColumns() - 1)
+{
+    if (GlobalConfig::getInstance()->d2 != 0)
+        setDelta(GlobalConfig::getInstance()->d2);
+    setStart(2);
+}
+
 Car::Car() : Object(3, 25, 1, Game::getColumns() - 1)
 {
     if (GlobalConfig::getInstance()->d3 != 0)
         setDelta(GlobalConfig::getInstance()->d3);
+    setStart(2);
 }
 
 Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, (Game::getColumns() - 1) * (-1))
 {
     if (GlobalConfig::getInstance()->d4 != 0)
         setDelta(GlobalConfig::getInstance()->d4);
-}
-
-Dinasour::Dinasour() : Object(Game::getColumns() / 3, 15, 1, Game::getColumns() - 1)
-{
-    if (GlobalConfig::getInstance()->d1 != 0)
-        setDelta(GlobalConfig::getInstance()->d1);
-}
-
-Bird::Bird() : Object(Game::getColumns() / 2, 10, -1, (Game::getColumns() - 1) * (-1))
-{
-    if (GlobalConfig::getInstance()->d2 != 0)
-        setDelta(GlobalConfig::getInstance()->d2);
+    setStart(Game::getColumns() - 2);
 }
