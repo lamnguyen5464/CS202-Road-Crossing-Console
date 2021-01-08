@@ -181,20 +181,20 @@ void Object::run()
         switch (type())
         {
         case 1:
-            //Sleep(20);
-            Sleep(200);
+            Sleep(20);
+            //Sleep(200);
             break;
         case 2:
-            //Sleep(200);
-            Sleep(1000);
+            Sleep(200);
+            //Sleep(1000);
             break;
         case 3:
-            //Sleep(100);
-            Sleep(500);
+            Sleep(100);
+            // Sleep(500);
             break;
         case 4:
-            //Sleep(150);
-            Sleep(700);
+            Sleep(150);
+            // Sleep(700);
             break;
         default:
             break;
@@ -227,30 +227,30 @@ int Dinasour::type() { return 2; }
 int Car::type() { return 3; }
 int Truck::type() { return 4; }
 
-Bird::Bird() : Object(Game::getColumns() / 2, 10, -1, (Game::getColumns() - 1) * (-1))
+Bird::Bird() : Object(Game::getColumns() - 3, 10, -1, (Game::getColumns() - 1) * (-1))
 {
     if (GlobalConfig::getInstance()->d1 != 0)
         setDelta(GlobalConfig::getInstance()->d1);
-    setStart(Game::getColumns() - 2);
+    setStart(Game::getColumns() - 3);
 }
 
-Dinasour::Dinasour() : Object(Game::getColumns() / 3, 15, 1, Game::getColumns() - 1)
+Dinasour::Dinasour() : Object(3, 15, 1, Game::getColumns() - 1)
 {
     if (GlobalConfig::getInstance()->d2 != 0)
         setDelta(GlobalConfig::getInstance()->d2);
-    setStart(2);
+    setStart(3);
 }
 
 Car::Car() : Object(3, 25, 1, Game::getColumns() - 1)
 {
     if (GlobalConfig::getInstance()->d3 != 0)
         setDelta(GlobalConfig::getInstance()->d3);
-    setStart(2);
+    setStart(3);
 }
 
 Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, (Game::getColumns() - 1) * (-1))
 {
     if (GlobalConfig::getInstance()->d4 != 0)
         setDelta(GlobalConfig::getInstance()->d4);
-    setStart(Game::getColumns() - 2);
+    setStart(Game::getColumns() - 3);
 }
