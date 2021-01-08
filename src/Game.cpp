@@ -359,6 +359,16 @@ void Game::showGroundPlay()
 
     cout << "@ Press Q to quit and save" << endl;
 
+    Game().textColor(ColorCode_DarkGreen);
+    Game().goTo(0, 12);
+    cout << "--------------------------------------------------------------------------------------------------------------------------------" << endl;
+    Game().goTo(0, 21);
+    cout << "--------------------------------------------------------------------------------------------------------------------------------" << endl;
+    Game().goTo(0, 27);
+    cout << "--------------------------------------------------------------------------------------------------------------------------------" << endl;
+    Game().goTo(0, 33);
+    cout << "--------------------------------------------------------------------------------------------------------------------------------" << endl;
+
     thread keyboardListener(Game().eventKeyBoardListener);
     thread draw(Game().drawPixelInQueue);
 
@@ -463,9 +473,10 @@ void Game::loadGame()
     else
     {
         gameData >> GlobalConfig::getInstance()->currentScore;
-        // gameData >> People::getPeople()->curX >> People::getPeople()->curY;
         gameData >> GlobalConfig::getInstance()->d1 >> GlobalConfig::getInstance()->d2 >> GlobalConfig::getInstance()->d3 >> GlobalConfig::getInstance()->d4;
         gameData.close();
+        People::getPeople()->curX = Game::getColumns() / 2;
+        People::getPeople()->curY = Game::getRows() - 1;
     }
 }
 
