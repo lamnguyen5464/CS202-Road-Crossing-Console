@@ -248,7 +248,7 @@ Car::Car() : Object(3, 25, 1, Game::getColumns() - 1)
     setStart(3);
 }
 
-Truck::Truck() : Object(Game::getColumns() - 3, 30, -1, (Game::getColumns() - 1) * (-1))
+Truck::Truck() : Object(Game::getColumns() - 10, 30, -1, (Game::getColumns() - 1) * (-1))
 {
     if (GlobalConfig::getInstance()->d4 != 0)
         setDelta(GlobalConfig::getInstance()->d4);

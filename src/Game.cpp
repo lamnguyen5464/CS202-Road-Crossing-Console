@@ -87,7 +87,7 @@ void Game::drawPixelInQueue()
 
             char tmp = GlobalConfig::getInstance()->drawing_matrix[p->x][p->y];
 
-            if (p->pixel != ' ' && tmp != ' ')
+            if (p->pixel != ' ' && tmp != ' ' && p->pixel != tmp)
             {
                 GlobalConfig::getInstance()->lastSignal = 'L';
                 return;
@@ -137,6 +137,7 @@ void Game::eventKeyBoardListener()
     while (1)
     {
         char t = toupper(_getch());
+        if (t == 'L') t = ' ';
         GlobalConfig::getInstance()->lastSignal = t;
         if (t == 'Q')
             return;
