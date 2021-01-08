@@ -181,20 +181,20 @@ void Object::run()
         switch (type())
         {
         case 1:
-            Sleep(20);
-            //Sleep(200);
+            //Sleep(20);
+            Sleep(200);
             break;
         case 2:
-            Sleep(200);
-            //Sleep(1000);
+            //Sleep(200);
+            Sleep(1000);
             break;
         case 3:
-            Sleep(100);
-            // Sleep(500);
+            //Sleep(100);
+            Sleep(500);
             break;
         case 4:
-            Sleep(150);
-            // Sleep(700);
+            //Sleep(150);
+            Sleep(700);
             break;
         default:
             break;
